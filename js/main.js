@@ -143,6 +143,14 @@
         <source src="${escapeHtml(item.src)}">
         Your browser doesn't support embedded video.
       </video>`;
+      if (item.speed) {
+        const videoEl = modalMedia.querySelector("video");
+        videoEl.defaultPlaybackRate = item.speed;
+        videoEl.playbackRate = item.speed;
+        videoEl.addEventListener("loadedmetadata", () => {
+          videoEl.playbackRate = item.speed;
+        });
+      }
     } else if (item.type === "image") {
       modalMedia.innerHTML = `<img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.title || project.title)}" loading="lazy" />`;
     }
