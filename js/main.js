@@ -139,6 +139,7 @@
   const modalTitle = document.getElementById("modalTitle");
   const modalDescription = document.getElementById("modalDescription");
   const modalTags = document.getElementById("modalTags");
+  const modalPipeline = document.getElementById("modalPipeline");
   const modalThumbs = document.getElementById("modalThumbs");
   const modalLinks = document.getElementById("modalLinks");
 
@@ -190,6 +191,11 @@
     modalTitle.textContent = project.title;
     modalDescription.textContent = project.description;
     modalTags.innerHTML = project.tags.map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join("");
+
+    modalPipeline.innerHTML =
+      project.pipeline && project.pipeline.length
+        ? `<h4>How it works</h4><ol>${project.pipeline.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}</ol>`
+        : "";
 
     renderMediaItem(project, 0);
 

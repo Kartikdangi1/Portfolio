@@ -636,6 +636,32 @@ h1, h2, h3, p { margin: 0; }
 .modal__body h3 { font-size: 1.35rem; font-weight: 700; }
 .modal__body p { margin-top: 0.7rem; color: var(--text-dim); font-size: 0.98rem; }
 .modal__tags { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.modal__pipeline:empty { display: none; }
+.modal__pipeline {
+  margin-top: 1.3rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--border);
+}
+.modal__pipeline h4 {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  font-weight: 600;
+}
+.modal__pipeline ol {
+  margin: 0.8rem 0 0;
+  padding-left: 1.3rem;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+.modal__pipeline li { margin-bottom: 0.45rem; }
+.modal__pipeline li::marker {
+  font-family: var(--font-mono);
+  color: var(--accent-2);
+}
 .modal__thumbs {
   margin-top: 1.2rem;
   display: flex;

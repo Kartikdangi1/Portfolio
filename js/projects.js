@@ -51,6 +51,10 @@
  *   featured    boolean  true = shown larger / first in the grid
  *   links       object   { github, demo, writeup } — any can be omitted or ""
  *   media       array    see above
+ *   pipeline    string[]? optional — short technical steps shown as a
+ *                        numbered "How it works" list in the modal, for
+ *                        projects worth breaking down stage by stage.
+ *                        Omit entirely if the description already covers it.
  */
 
 const PROJECTS = [
@@ -75,6 +79,12 @@ const PROJECTS = [
       { title: "Corridor map result", type: "image", src: "assets/images/projects/radar-mapping-corridor-map.png" },
       { title: "Occlusion filtering", type: "image", src: "assets/images/projects/radar-mapping-occlusion.png" },
       { title: "UAV + radar payload", type: "image", src: "assets/images/projects/radar-mapping-drone-hw.jpeg" }
+    ],
+    pipeline: [
+      "Fuse Madgwick IMU, RANSAC Doppler ego-velocity, and LiDAR height into one odometry estimate",
+      "Feed that into a GICP SLAM pipeline with loop closure for drift-free pose tracking",
+      "Build a temporal Bayesian occupancy grid from raw radar returns, with occlusion filtering to suppress multipath ghosts",
+      "Run the full stack end to end in roughly 150 ms on a Jetson Orin NX"
     ]
   },
   {
@@ -96,6 +106,13 @@ const PROJECTS = [
       { title: "Pick-and-place demo", type: "video", src: "assets/videos/idmp-pickandplace-demo.mp4", poster: "assets/images/projects/idmp-distance-field.png", speed: 2 },
       { title: "Distance-and-gradient field", type: "image", src: "assets/images/projects/idmp-distance-field.png" },
       { title: "MAiRA 7M cobot at CERI", type: "image", src: "assets/images/projects/idmp-hardware-setup.png" }
+    ],
+    pipeline: [
+      "Stream depth from an Azure Kinect through a TF2 self-filter to remove the arm's own body from the point cloud",
+      "Maintain a live distance-and-gradient field around 18 virtual collision points on the arm",
+      "Exploit redundant null-space motion on the 7-DoF MAiRA to dodge obstacles without pausing to re-plan",
+      "Close the reactive control loop at a stable 98-100 Hz",
+      "Drive a MediaPipe hand-gesture interface so an operator can step through the assembly sequence hands-free"
     ]
   },
   {
@@ -113,7 +130,13 @@ const PROJECTS = [
       demo: "",
       writeup: ""
     },
-    media: []
+    media: [],
+    pipeline: [
+      "Hand-written SAC actor-critic in JAX/Flax as the base RL algorithm",
+      "RLPD's dual-buffer replay mixes offline demonstrations with online experience",
+      "HG-DAgger intervention routing lets a human take over mid-episode and folds the correction back into training",
+      "20+ swappable extensions (Q-chunking, flow-matching policies, domain randomization) benchmarked head-to-head on the same MuJoCo tasks"
+    ]
   },
   {
     id: "drone-radar-camera-fusion",
@@ -153,6 +176,12 @@ const PROJECTS = [
       { title: "Raw camera view", type: "image", src: "assets/images/projects/socket-detector-raw.jpg" },
       { title: "Segmentation mask", type: "image", src: "assets/images/projects/socket-detector-mask.jpg" },
       { title: "IoU across validation set", type: "image", src: "assets/images/projects/socket-detector-iou-results.png" }
+    ],
+    pipeline: [
+      "Detectron2 segmentation model locates the socket in the camera frame",
+      "SIFT feature matching plus RANSAC refines the detected pose against a reference template",
+      "A vision-based reward classifier confirms successful insertion on an HMI overlay",
+      "Validated at 0.964 mean mask IoU across 34 labeled instances; 25 of 27 insertion cycles with no manual correction in a 30-minute session"
     ]
   },
   {
