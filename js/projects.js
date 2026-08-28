@@ -24,6 +24,8 @@
  *     { title: "Training run", type: "video", src: "assets/videos/my-clip.mp4",
  *       poster: "assets/images/projects/my-poster.jpg" }
  *     ^ `poster` is optional — a still frame shown before the video plays.
+ *     ^ `speed` is optional — a playback-rate multiplier (e.g. 2 for 2x) for
+ *       footage that's slower-paced than you want visitors to sit through.
  *
  *   Image (local file or a full URL):
  *     { title: "System architecture", type: "image", src: "assets/images/projects/my-diagram.png" }
@@ -73,6 +75,27 @@ const PROJECTS = [
       { title: "Corridor map result", type: "image", src: "assets/images/projects/radar-mapping-corridor-map.png" },
       { title: "Occlusion filtering", type: "image", src: "assets/images/projects/radar-mapping-occlusion.png" },
       { title: "UAV + radar payload", type: "image", src: "assets/images/projects/radar-mapping-drone-hw.jpeg" }
+    ]
+  },
+  {
+    id: "idmp-cobot",
+    title: "Interactive Distance Field Mapping and Planning (IDMP)",
+    tagline: "Reactive, real-time collision avoidance for a 7-DoF cobot from a live distance-and-gradient field",
+    description:
+      "A university project at CERI (Center for Robotics, THWS Würzburg-Schweinfurt): I migrated an existing IDMP stack from ROS 1 on a 6-DoF UR5e to ROS 2 on a 7-DoF NEURA MAiRA cobot, rebuilding the collision pipeline around an Azure Kinect depth camera with a TF2 self-filter, 18 virtual collision points, and null-space exploitation for a stable 98-100 Hz control loop that reacts to obstacles as they move instead of pausing to re-plan. I also added a MediaPipe-based worker guidance system so an operator can step through an assembly sequence hands-free with hand gestures, backed by a projector overlay for live feedback on the bench.",
+    tags: ["ROS2", "Distance Fields", "Reactive Planning", "Collision Avoidance", "Cobot", "MediaPipe"],
+    accent: ["#22d3ee", "#c026d3"],
+    thumbnail: "assets/images/projects/idmp-distance-field.png",
+    featured: true,
+    links: {
+      github: "",
+      demo: "",
+      writeup: ""
+    },
+    media: [
+      { title: "Pick-and-place demo", type: "video", src: "assets/videos/idmp-pickandplace-demo.mp4", poster: "assets/images/projects/idmp-distance-field.png", speed: 2 },
+      { title: "Distance-and-gradient field", type: "image", src: "assets/images/projects/idmp-distance-field.png" },
+      { title: "MAiRA 7M cobot at CERI", type: "image", src: "assets/images/projects/idmp-hardware-setup.png" }
     ]
   },
   {
@@ -198,5 +221,6 @@ const ACCENT_PRESETS = {
   amber: ["#fbbf24", "#d97706"],
   slate: ["#94a3b8", "#334155"],
   sky: ["#38bdf8", "#0369a1"],
-  violet: ["#a78bfa", "#5b21b6"]
+  violet: ["#a78bfa", "#5b21b6"],
+  cyan: ["#22d3ee", "#c026d3"]
 };
