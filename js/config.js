@@ -8,15 +8,15 @@
 
 const SITE = {
   name: "Kartik Dangi",
-  role: "Robotics Engineer — Aerial Perception & Learning",
+  role: "Robotics Engineer, Aerial Perception & Learning",
   tagline:
-    "I turn sparse 4D radar returns into usable maps for GPS-denied flight, and get reinforcement-learning policies to improve safely with a person in the loop.",
+    "I turn sparse 4D radar returns into usable maps for GPS-denied flight, and help reinforcement-learning policies improve safely with a person in the loop.",
   location: "",
   email: "kartikdangide@gmail.com",
   resumeUrl: "",
 
   about:
-    "I'm a robotics engineer focused on aerial perception — getting useful 3D maps out of 4D FMCW radar on a UAV, in GPS-denied indoor environments, on embedded compute, with no clean lab and no ground truth. I hold a B.Eng. in Robotics and am completing an M.Eng. in Elektro- und Informationstechnik at THWS Schweinfurt, where my Bachelor's thesis built a real-time radar-only indoor mapping system for a UAV. Alongside that, I work on human-in-the-loop reinforcement learning and vision-guided robotic manipulation, and previously worked as a working student at TTZ-EMO building multithreaded FEM simulation tooling.",
+    "I'm a robotics engineer focused on aerial perception: getting useful 3D maps out of 4D FMCW radar on a UAV, in GPS-denied indoor environments, on embedded compute, with no clean lab and no ground truth. I hold a B.Eng. in Robotics and am completing an M.Eng. in Elektro- und Informationstechnik at THWS Schweinfurt, where my Bachelor's thesis built a real-time radar-only indoor mapping system for a UAV. Alongside that, I work on human-in-the-loop reinforcement learning and vision-guided robotic manipulation. I previously worked as a working student at TTZ-EMO, building multithreaded FEM simulation tooling.",
 
   stats: [
     { label: "Theses (BEng + ongoing MEng)", value: "2" },

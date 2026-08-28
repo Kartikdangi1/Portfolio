@@ -55,9 +55,9 @@ const PROJECTS = [
   {
     id: "radar-indoor-mapping-uav",
     title: "Radar-Based Indoor Mapping for UAVs",
-    tagline: "Real-time occupancy mapping from 4D radar alone — no GPS, no camera, no LiDAR map",
+    tagline: "Real-time occupancy mapping from 4D radar alone: no GPS, no camera, no LiDAR map",
     description:
-      "My Bachelor's thesis at THWS Schweinfurt: a ROS 2 system that turns a Continental ARS548 4D automotive radar into a real-time indoor occupancy-mapping tool for a UAV, so it keeps working in GPS-denied space and through smoke, dust, or darkness. Fused odometry (Madgwick IMU + RANSAC Doppler ego-velocity + LiDAR height) feeds a GICP SLAM pipeline with loop closure, while a separate radar path builds a temporal Bayesian occupancy grid with occlusion filtering — the full pipeline runs end-to-end in roughly 150 ms on an NVIDIA Jetson Orin NX.",
+      "My Bachelor's thesis at THWS Schweinfurt: a ROS 2 system that turns a Continental ARS548 4D automotive radar into a real-time indoor occupancy-mapping tool for a UAV, so it keeps working in GPS-denied space and through smoke, dust, or darkness. Fused odometry (Madgwick IMU, RANSAC Doppler ego-velocity, and LiDAR height) feeds a GICP SLAM pipeline with loop closure, while a separate radar path builds a temporal Bayesian occupancy grid with occlusion filtering. The full pipeline runs end to end in roughly 150 ms on an NVIDIA Jetson Orin NX.",
     tags: ["ROS2", "SLAM", "Sensor Fusion", "4D Radar", "UAV", "Jetson"],
     accent: ["#ff8a3d", "#ff5d3d"],
     thumbnail: "assets/images/projects/radar-mapping-room-map.png",
@@ -77,10 +77,10 @@ const PROJECTS = [
   },
   {
     id: "hil-serl-lite",
-    title: "HIL-SERL Lite — Human-in-the-Loop RL Playground",
-    tagline: "A from-scratch HIL-SERL reimplementation, sized to run on a laptop",
+    title: "HIL-SERL Lite",
+    tagline: "A human-in-the-loop RL research platform, rebuilt from scratch to run on a laptop",
     description:
-      "I built an architecturally-complete reimplementation of HIL-SERL (human-in-the-loop, sample-efficient robot RL) — hand-written SAC in JAX/Flax, RLPD's dual-buffer replay, and HG-DAgger intervention routing — sized to run against a simulated Franka Panda in MuJoCo instead of a real robot fleet. It grew into a small research platform: YAML-declared manipulation tasks, a one-command demos-to-train-to-eval pipeline with a built-in web dashboard, and 20+ switchable RL methods (Q-chunking, flow-matching policies, domain randomization, and more) benchmarked head-to-head on the same tasks, backed by 112+ tests.",
+      "I built a full reimplementation of HIL-SERL (human-in-the-loop, sample-efficient robot RL), with hand-written SAC in JAX/Flax, RLPD's dual-buffer replay, and HG-DAgger intervention routing. It runs against a simulated Franka Panda in MuJoCo instead of a real robot fleet, and it grew into a small research platform along the way: YAML-declared manipulation tasks, a one-command pipeline from demos to training to evaluation with a built-in web dashboard, and 20+ swappable RL methods (Q-chunking, flow-matching policies, domain randomization, and more), all benchmarked head-to-head on the same tasks and backed by 112+ tests.",
     tags: ["Reinforcement Learning", "JAX/Flax", "MuJoCo", "Human-in-the-Loop"],
     accent: ["#ff5d3d", "#c2410c"],
     thumbnail: "",
@@ -95,9 +95,9 @@ const PROJECTS = [
   {
     id: "drone-radar-camera-fusion",
     title: "Radar-Camera Fusion & Tracking for UAVs",
-    tagline: "Ongoing Master's thesis — fusing 4D radar and camera for multi-object tracking in flight",
+    tagline: "Fusing 4D radar and camera for multi-object tracking in flight (ongoing Master's thesis)",
     description:
-      "For my Master's thesis I'm building a radar-camera fusion and multi-object tracking stack for a UAV: a Continental ARS548 4D radar and an Intel RealSense D435i feed a Hungarian-matching fusion node, and a ByteTrack-based multi-object tracker uses the radar's Doppler velocity directly in its Kalman update. It runs on an Avular Vertex One drone (Jetson Orin NX) with hardware time-sync (gPTP) between sensors. This work is currently in progress.",
+      "For my Master's thesis I'm building a radar-camera fusion and multi-object tracking stack for a UAV: a Continental ARS548 4D radar and an Intel RealSense D435i feed a Hungarian-matching fusion node, and a ByteTrack-based multi-object tracker uses the radar's Doppler velocity directly in its Kalman update. It runs on an Avular Vertex One drone (Jetson Orin NX) with hardware time-sync (gPTP) between sensors, and it's still very much in progress.",
     tags: ["Sensor Fusion", "Computer Vision", "Multi-Object Tracking", "UAV", "In Progress"],
     accent: ["#f97316", "#7c2d12"],
     thumbnail: "",
@@ -137,7 +137,7 @@ const PROJECTS = [
     title: "Autonomous Frontier Explorer",
     tagline: "Multi-sensor SLAM and next-best-view exploration in ROS 2",
     description:
-      "An autonomous exploration robot in ROS 2 that fuses LiDAR, radar, and RGB-D depth into a single scan, builds a 2D occupancy map with SLAM Toolbox and Nav2, and continuously computes the next-best viewpoint to maximize frontier coverage of an unknown environment — plus a Stable Baselines3 PPO policy layer as a testbed for reinforcement learning on top of the navigation stack.",
+      "An autonomous exploration robot in ROS 2 that fuses LiDAR, radar, and RGB-D depth into a single scan, builds a 2D occupancy map with SLAM Toolbox and Nav2, and continuously computes the next-best viewpoint to maximize frontier coverage of an unknown environment. On top of that navigation stack sits a Stable Baselines3 PPO policy layer, which I use as a testbed for reinforcement learning.",
     tags: ["ROS2", "SLAM", "Nav2", "Reinforcement Learning", "Gazebo"],
     accent: ["#94a3b8", "#334155"],
     thumbnail: "assets/images/projects/ros2-explorer-gazebo.png",
@@ -173,7 +173,7 @@ const PROJECTS = [
     title: "Camera-Driven Robotic Hand Tracking",
     tagline: "MediaPipe hand tracking driving a simulated DexHand",
     description:
-      "A ROS 2 node that drives a DexHand robotic hand model from MediaPipe hand tracking on a live camera feed — deriving finger flexion and abduction angles directly from landmark geometry to avoid noisy quaternion orientation, with tuned One-Euro filtering and hold-last-pose logic to keep the joint-state stream smooth through brief tracking loss.",
+      "A ROS 2 node that drives a DexHand robotic hand model from MediaPipe hand tracking on a live camera feed. It derives finger flexion and abduction angles directly from landmark geometry instead of relying on noisy quaternion orientation, and uses tuned One-Euro filtering plus hold-last-pose logic to keep the joint-state stream smooth through brief tracking loss.",
     tags: ["ROS2", "MediaPipe", "Computer Vision", "Robotics"],
     accent: ["#a78bfa", "#5b21b6"],
     thumbnail: "https://github.com/user-attachments/assets/1799c15a-936a-4b31-93a5-759c074c7313",
