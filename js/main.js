@@ -76,24 +76,56 @@
       </div>`;
   }
 
+  // The IDMP project is literally a robot arm doing collision-aware pick and
+  // place, so its card gets placed on the page the same way: a small arm
+  // swoops in, "grips" the card, and sets it down. See .cobot-card-wrap in
+  // style.css for the choreography.
+  const COBOT_CARD_ID = "idmp-cobot";
+  const COBOT_ARM_SVG = `
+    <svg class="cobot-arm__svg" viewBox="0 0 100 70" aria-hidden="true">
+      <defs>
+        <linearGradient id="cobotArmGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#22d3ee" />
+          <stop offset="100%" stop-color="#c026d3" />
+        </linearGradient>
+      </defs>
+      <circle cx="50" cy="4" r="5" fill="#3a3f4d" />
+      <line x1="50" y1="4" x2="32" y2="30" stroke="url(#cobotArmGrad)" stroke-width="6" stroke-linecap="round" />
+      <line x1="32" y1="30" x2="50" y2="54" stroke="url(#cobotArmGrad)" stroke-width="6" stroke-linecap="round" />
+      <circle cx="32" cy="30" r="4.5" fill="#0a0a0d" stroke="#22d3ee" stroke-width="1.5" />
+      <line x1="50" y1="54" x2="41" y2="64" stroke="#c026d3" stroke-width="4" stroke-linecap="round" />
+      <line x1="50" y1="54" x2="59" y2="64" stroke="#c026d3" stroke-width="4" stroke-linecap="round" />
+    </svg>`;
+
+  function projectCardHtml(p, skipReveal) {
+    return `
+      <article class="project-card ${p.featured ? "project-card--featured" : ""}${skipReveal ? "" : " reveal"}" data-id="${escapeHtml(p.id)}" tabindex="0">
+        ${cardMediaHtml(p)}
+        <div class="project-card__body">
+          <h3 class="project-card__title">${escapeHtml(p.title)}</h3>
+          <p class="project-card__tagline">${escapeHtml(p.tagline)}</p>
+          <div class="project-card__tags">
+            ${p.tags.map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join("")}
+          </div>
+        </div>
+      </article>`;
+  }
+
   function renderProjects() {
     const grid = document.getElementById("projectsGrid");
     const sorted = [...PROJECTS].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
 
     grid.innerHTML = sorted
-      .map(
-        (p) => `
-        <article class="project-card ${p.featured ? "project-card--featured" : ""} reveal" data-id="${escapeHtml(p.id)}" tabindex="0">
-          ${cardMediaHtml(p)}
-          <div class="project-card__body">
-            <h3 class="project-card__title">${escapeHtml(p.title)}</h3>
-            <p class="project-card__tagline">${escapeHtml(p.tagline)}</p>
-            <div class="project-card__tags">
-              ${p.tags.map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join("")}
-            </div>
-          </div>
-        </article>`
-      )
+      .map((p) => {
+        const isCobot = p.id === COBOT_CARD_ID;
+        const card = projectCardHtml(p, isCobot);
+        if (!isCobot) return card;
+        return `
+          <div class="cobot-card-wrap reveal">
+            <div class="cobot-arm">${COBOT_ARM_SVG}</div>
+            ${card}
+          </div>`;
+      })
       .join("");
 
     grid.querySelectorAll(".project-card").forEach((card) => {

@@ -309,6 +309,7 @@ h1, h2, h3, p { margin: 0; }
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 1.6rem;
+  align-items: start;
 }
 
 .project-card {
@@ -329,6 +330,54 @@ h1, h2, h3, p { margin: 0; }
 .project-card--featured .project-card__badge {
   background: linear-gradient(135deg, var(--accent-2), var(--accent));
   border-color: transparent;
+}
+
+/* The IDMP cobot card gets placed by an animated robot arm instead of the
+   generic fade-up reveal -- see COBOT_ARM_SVG in main.js for the markup. */
+.cobot-card-wrap {
+  position: relative;
+}
+.cobot-card-wrap.reveal {
+  /* cancel the generic .reveal fade -- the arm/card animate individually */
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+.cobot-card-wrap .project-card {
+  opacity: 0;
+  transform: translateY(-54px) rotate(-4deg);
+}
+.cobot-card-wrap.is-visible .project-card {
+  animation: cobotDrop 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+}
+.cobot-arm {
+  position: absolute;
+  top: -54px;
+  left: 50%;
+  width: 82px;
+  height: 58px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 5;
+  transform: translateX(-50%) translateY(-30px);
+  filter: drop-shadow(0 6px 12px rgba(34, 211, 238, 0.35));
+}
+.cobot-arm__svg { width: 100%; height: 100%; }
+.cobot-card-wrap.is-visible .cobot-arm {
+  animation: cobotArmSwoop 1.15s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes cobotDrop {
+  0% { opacity: 0; transform: translateY(-54px) rotate(-4deg); }
+  45% { opacity: 1; }
+  70% { transform: translateY(6px) rotate(1deg); }
+  100% { opacity: 1; transform: translateY(0) rotate(0deg); }
+}
+@keyframes cobotArmSwoop {
+  0% { opacity: 0; transform: translateX(-50%) translateY(-40px) rotate(-10deg); }
+  35% { opacity: 1; transform: translateX(-50%) translateY(4px) rotate(3deg); }
+  55% { opacity: 1; transform: translateX(-50%) translateY(4px) rotate(3deg); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-34px) rotate(-6deg); }
 }
 
 .project-card__media {
