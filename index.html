@@ -146,6 +146,39 @@
     </div>
   </div>
 
+  <!-- ===== Drone companion (decorative scroll guide, click to jump to top) ===== -->
+  <button class="drone-companion" id="droneCompanion" aria-label="Scroll to top" title="Scroll to top">
+    <span class="drone-companion__bob">
+      <svg class="drone-companion__svg" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <linearGradient id="droneBodyGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ff8a3d" />
+            <stop offset="100%" stop-color="#ff5d3d" />
+          </linearGradient>
+        </defs>
+        <line x1="38" y1="46" x2="18" y2="30" class="drone-companion__arm" />
+        <line x1="62" y1="46" x2="82" y2="30" class="drone-companion__arm" />
+        <line x1="38" y1="60" x2="18" y2="76" class="drone-companion__arm" />
+        <line x1="62" y1="60" x2="82" y2="76" class="drone-companion__arm" />
+        <g class="drone-companion__rotor" style="transform-origin: 18px 30px">
+          <circle cx="18" cy="30" r="8" class="drone-companion__rotor-ring" />
+        </g>
+        <g class="drone-companion__rotor" style="transform-origin: 82px 30px">
+          <circle cx="82" cy="30" r="8" class="drone-companion__rotor-ring" />
+        </g>
+        <g class="drone-companion__rotor" style="transform-origin: 18px 76px">
+          <circle cx="18" cy="76" r="8" class="drone-companion__rotor-ring" />
+        </g>
+        <g class="drone-companion__rotor" style="transform-origin: 82px 76px">
+          <circle cx="82" cy="76" r="8" class="drone-companion__rotor-ring" />
+        </g>
+        <ellipse cx="50" cy="53" rx="19" ry="11" fill="url(#droneBodyGrad)" />
+        <circle cx="50" cy="53" r="5.5" fill="#0a0a0d" />
+        <circle cx="50" cy="53" r="3" fill="#8fd7ff" />
+      </svg>
+    </span>
+  </button>
+
   <script src="js/config.js"></script>
   <script src="js/projects.js"></script>
   <script src="js/main.js"></script>

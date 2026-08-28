@@ -15,7 +15,7 @@
 
   /* ---------------- Site info ---------------- */
   function renderSiteInfo() {
-    document.title = `${SITE.name} — ${SITE.role}`;
+    document.title = `${SITE.name}, ${SITE.role}`;
     document.getElementById("heroName").textContent = SITE.name;
     document.getElementById("heroRole").textContent = SITE.role;
     document.getElementById("heroTagline").textContent = SITE.tagline;
@@ -261,6 +261,62 @@
     targets.forEach((t) => io.observe(t));
   }
 
+  /* ---------------- Drone companion ---------------- */
+  function setupDroneCompanion() {
+    const drone = document.getElementById("droneCompanion");
+    if (!drone) return;
+
+    drone.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    window.setTimeout(() => drone.classList.add("is-active"), 400);
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const RAIL_MIN_WIDTH = 641; // must match the CSS breakpoint that parks it in a fixed corner
+
+    if (reduceMotion) return; // CSS still shows it; just skip the scroll-linked motion
+
+    let currentY = 0;
+    let currentTilt = 0;
+    let lastScrollY = window.scrollY;
+    let ticking = true;
+
+    function frame() {
+      if (!ticking) return;
+
+      if (window.innerWidth >= RAIL_MIN_WIDTH) {
+        const doc = document.documentElement;
+        const scrollable = Math.max(doc.scrollHeight - window.innerHeight, 1);
+        const progress = Math.min(Math.max(window.scrollY / scrollable, 0), 1);
+
+        const topBound = 96;
+        const bottomBound = window.innerHeight - 96;
+        const targetY = topBound + progress * (bottomBound - topBound);
+
+        const velocity = window.scrollY - lastScrollY;
+        lastScrollY = window.scrollY;
+        const tiltTarget = Math.max(Math.min(velocity * 1.4, 20), -20);
+
+        currentY += (targetY - currentY) * 0.07;
+        currentTilt += (tiltTarget - currentTilt) * 0.12;
+
+        drone.style.transform = `translateY(${currentY.toFixed(1)}px) rotate(${currentTilt.toFixed(1)}deg)`;
+      } else {
+        drone.style.transform = "";
+      }
+
+      requestAnimationFrame(frame);
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      ticking = document.visibilityState === "visible";
+      if (ticking) requestAnimationFrame(frame);
+    });
+
+    requestAnimationFrame(frame);
+  }
+
   /* ---------------- Init ---------------- */
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".section").forEach((el) => el.classList.add("reveal"));
@@ -269,5 +325,6 @@
     renderProjects();
     setupNav();
     setupReveal();
+    setupDroneCompanion();
   });
 })();
