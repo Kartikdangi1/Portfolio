@@ -1,0 +1,11 @@
+# Force LF regardless of the host's core.autocrlf.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.svg binary
+*.pdf binary
+*.zip binary
+*.ico binary
+*.mp4 binary

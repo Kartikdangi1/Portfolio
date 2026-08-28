@@ -1,0 +1,265 @@
+/**
+ * Rendering + interaction logic. Reads from SITE (config.js) and PROJECTS
+ * (projects.js) — you should not need to touch this file to update content.
+ */
+(function () {
+  "use strict";
+
+  const escapeHtml = (str) =>
+    String(str).replace(/[&<>"']/g, (c) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    })[c]);
+
+  const youtubeEmbedUrl = (id) =>
+    `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0`;
+
+  /* ---------------- Site info ---------------- */
+  function renderSiteInfo() {
+    document.title = `${SITE.name} — ${SITE.role}`;
+    document.getElementById("heroName").textContent = SITE.name;
+    document.getElementById("heroRole").textContent = SITE.role;
+    document.getElementById("heroTagline").textContent = SITE.tagline;
+    document.getElementById("aboutText").textContent = SITE.about;
+    document.getElementById("footerName").textContent = SITE.name;
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const statsEl = document.getElementById("aboutStats");
+    statsEl.innerHTML = SITE.stats
+      .map(
+        (s) => `
+        <div class="about__stat">
+          <div class="value">${escapeHtml(s.value)}</div>
+          <div class="label">${escapeHtml(s.label)}</div>
+        </div>`
+      )
+      .join("");
+
+    const skillsEl = document.getElementById("skillsCloud");
+    skillsEl.innerHTML = SITE.skills
+      .map((s) => `<span class="skill-pill">${escapeHtml(s)}</span>`)
+      .join("");
+
+    const emailLink = document.getElementById("emailLink");
+    if (SITE.email) {
+      emailLink.href = `mailto:${SITE.email}`;
+    } else {
+      emailLink.hidden = true;
+    }
+
+    const githubLink = document.getElementById("githubLink");
+    if (SITE.social.github) {
+      githubLink.href = SITE.social.github;
+    } else {
+      githubLink.hidden = true;
+    }
+
+    const linkedinLink = document.getElementById("linkedinLink");
+    if (SITE.social.linkedin) {
+      linkedinLink.href = SITE.social.linkedin;
+      linkedinLink.hidden = false;
+    }
+  }
+
+  /* ---------------- Projects grid ---------------- */
+  function cardMediaHtml(project) {
+    const [from, to] = project.accent || ["#ff8a3d", "#ff5d3d"];
+    const bg = project.thumbnail
+      ? `background-image:url('${escapeHtml(project.thumbnail)}')`
+      : `background-image:linear-gradient(135deg, ${from}, ${to})`;
+
+    return `
+      <div class="project-card__media" style="${bg}">
+        <span class="project-card__badge">${escapeHtml(project.tags[0] || "Project")}</span>
+        <div class="project-card__play">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+      </div>`;
+  }
+
+  function renderProjects() {
+    const grid = document.getElementById("projectsGrid");
+    const sorted = [...PROJECTS].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+
+    grid.innerHTML = sorted
+      .map(
+        (p) => `
+        <article class="project-card ${p.featured ? "project-card--featured" : ""} reveal" data-id="${escapeHtml(p.id)}" tabindex="0">
+          ${cardMediaHtml(p)}
+          <div class="project-card__body">
+            <h3 class="project-card__title">${escapeHtml(p.title)}</h3>
+            <p class="project-card__tagline">${escapeHtml(p.tagline)}</p>
+            <div class="project-card__tags">
+              ${p.tags.map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join("")}
+            </div>
+          </div>
+        </article>`
+      )
+      .join("");
+
+    grid.querySelectorAll(".project-card").forEach((card) => {
+      const open = () => openModal(card.dataset.id);
+      card.addEventListener("click", open);
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          open();
+        }
+      });
+    });
+  }
+
+  /* ---------------- Video modal ---------------- */
+  const modal = document.getElementById("videoModal");
+  const modalMedia = document.getElementById("modalMedia");
+  const modalTitle = document.getElementById("modalTitle");
+  const modalDescription = document.getElementById("modalDescription");
+  const modalTags = document.getElementById("modalTags");
+  const modalThumbs = document.getElementById("modalThumbs");
+  const modalLinks = document.getElementById("modalLinks");
+
+  let lastFocused = null;
+
+  function renderMediaItem(project, index) {
+    const item = project.media[index];
+    if (!item) {
+      modalMedia.innerHTML = `
+        <div class="modal__media--empty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          <span>Demo video coming soon</span>
+        </div>`;
+      return;
+    }
+
+    if (item.type === "youtube") {
+      modalMedia.innerHTML = `<iframe src="${youtubeEmbedUrl(item.id)}"
+        title="${escapeHtml(item.title || project.title)}"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen loading="lazy"></iframe>`;
+    } else if (item.type === "video") {
+      modalMedia.innerHTML = `<video controls autoplay
+        ${item.poster ? `poster="${escapeHtml(item.poster)}"` : ""}>
+        <source src="${escapeHtml(item.src)}">
+        Your browser doesn't support embedded video.
+      </video>`;
+    } else if (item.type === "image") {
+      modalMedia.innerHTML = `<img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.title || project.title)}" loading="lazy" />`;
+    }
+  }
+
+  function openModal(id) {
+    const project = PROJECTS.find((p) => p.id === id);
+    if (!project) return;
+
+    lastFocused = document.activeElement;
+
+    modalTitle.textContent = project.title;
+    modalDescription.textContent = project.description;
+    modalTags.innerHTML = project.tags.map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join("");
+
+    renderMediaItem(project, 0);
+
+    modalThumbs.innerHTML = project.media
+      .map(
+        (item, i) =>
+          `<button class="modal__thumb ${i === 0 ? "active" : ""}" data-index="${i}">${escapeHtml(item.title || `Media ${i + 1}`)}</button>`
+      )
+      .join("");
+
+    modalThumbs.querySelectorAll(".modal__thumb").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        modalThumbs.querySelectorAll(".modal__thumb").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderMediaItem(project, Number(btn.dataset.index));
+      });
+    });
+
+    const links = [
+      project.links?.github && { label: "View code", href: project.links.github },
+      project.links?.demo && { label: "Live demo", href: project.links.demo },
+      project.links?.writeup && { label: "Read write-up", href: project.links.writeup }
+    ].filter(Boolean);
+
+    modalLinks.innerHTML = links
+      .map((l) => `<a class="btn btn--ghost" href="${escapeHtml(l.href)}" target="_blank" rel="noopener">${escapeHtml(l.label)}</a>`)
+      .join("");
+
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    document.getElementById("modalClose").focus();
+  }
+
+  function closeModal() {
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    modalMedia.innerHTML = "";
+    if (lastFocused) lastFocused.focus();
+  }
+
+  document.getElementById("modalClose").addEventListener("click", closeModal);
+  document.getElementById("modalBackdrop").addEventListener("click", closeModal);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
+  });
+
+  /* ---------------- Nav scroll + mobile menu ---------------- */
+  function setupNav() {
+    const nav = document.getElementById("nav");
+    const toggle = document.getElementById("navToggle");
+    const links = document.getElementById("navLinks");
+
+    window.addEventListener(
+      "scroll",
+      () => nav.classList.toggle("scrolled", window.scrollY > 20),
+      { passive: true }
+    );
+
+    toggle.addEventListener("click", () => {
+      const isOpen = links.classList.toggle("open");
+      toggle.classList.toggle("open", isOpen);
+      toggle.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    links.querySelectorAll("a").forEach((a) =>
+      a.addEventListener("click", () => {
+        links.classList.remove("open");
+        toggle.classList.remove("open");
+        toggle.setAttribute("aria-expanded", "false");
+      })
+    );
+  }
+
+  /* ---------------- Scroll reveal ---------------- */
+  function setupReveal() {
+    const targets = document.querySelectorAll(".reveal");
+    if (!("IntersectionObserver" in window)) {
+      targets.forEach((t) => t.classList.add("is-visible"));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    targets.forEach((t) => io.observe(t));
+  }
+
+  /* ---------------- Init ---------------- */
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".section").forEach((el) => el.classList.add("reveal"));
+
+    renderSiteInfo();
+    renderProjects();
+    setupNav();
+    setupReveal();
+  });
+})();
