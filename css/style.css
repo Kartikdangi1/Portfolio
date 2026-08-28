@@ -314,6 +314,7 @@ h1, h2, h3, p { margin: 0; }
   align-items: start;
 }
 .about__text { color: var(--text-dim); font-size: 1.05rem; }
+.about__text p + p { margin-top: 1.1rem; }
 .about__stats {
   display: grid;
   grid-template-columns: 1fr 1fr;

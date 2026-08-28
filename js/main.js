@@ -18,7 +18,10 @@
     document.title = `${SITE.name}, ${SITE.role}`;
     document.getElementById("heroName").textContent = SITE.name;
     document.getElementById("heroTagline").textContent = SITE.tagline;
-    document.getElementById("aboutText").textContent = SITE.about;
+    const aboutParagraphs = Array.isArray(SITE.about) ? SITE.about : [SITE.about];
+    document.getElementById("aboutText").innerHTML = aboutParagraphs
+      .map((p) => `<p>${escapeHtml(p)}</p>`)
+      .join("");
     document.getElementById("footerName").textContent = SITE.name;
     document.getElementById("year").textContent = new Date().getFullYear();
 

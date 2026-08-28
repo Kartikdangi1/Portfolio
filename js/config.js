@@ -26,8 +26,12 @@ const SITE = {
   email: "kartikdangide@gmail.com",
   resumeUrl: "",
 
-  about:
-    "I'm a robotics engineer focused on aerial perception: getting useful 3D maps out of 4D FMCW radar on a UAV, in GPS-denied indoor environments, on embedded compute, with no clean lab and no ground truth. I hold a B.Eng. in Robotics and am completing an M.Eng. in Elektro- und Informationstechnik at THWS Schweinfurt, where my Bachelor's thesis built a real-time radar-only indoor mapping system for a UAV. Alongside that, I work on human-in-the-loop reinforcement learning and vision-guided robotic manipulation. I previously worked as a working student at TTZ-EMO, building multithreaded FEM simulation tooling.",
+  // Array of paragraphs, rendered as separate <p> tags.
+  about: [
+    "I'm a robotics engineer working across two connected areas: perception that holds up on imperfect sensors, and learned policies that keep working once they leave simulation.",
+    "I hold a B.Eng. in Robotics from THWS Schweinfurt, where my thesis built a real-time, radar-only indoor mapping system for a UAV, with no GPS, no camera, and no clean lab conditions to lean on. I'm now completing an M.Eng. in Elektro- und Informationstechnik at the same university, extending that work into radar-camera sensor fusion for my Master's thesis.",
+    "Alongside that, I build human-in-the-loop reinforcement learning systems and vision-guided manipulation pipelines, where the hard part usually isn't training a policy, it's getting it to behave safely on real hardware. I previously worked as a working student at TTZ-EMO, building multithreaded FEM simulation tooling."
+  ],
 
   stats: [
     { label: "Theses (BEng + ongoing MEng)", value: "2" },
