@@ -85,9 +85,15 @@
       <div class="hero__grid"></div>
 
       <div class="hero__content reveal">
+        <div class="hero__avatar">
+          <img src="assets/images/profile.jpg" alt="Kartik Dangi" width="132" height="132" />
+        </div>
         <p class="eyebrow">Hi, I'm</p>
         <h1 class="hero__name" id="heroName">Kartik Dangi</h1>
-        <p class="hero__role" id="heroRole">Robotics Engineer, Aerial Perception &amp; Learning</p>
+        <p class="hero__role" id="heroRole">
+          <span id="heroRolePrefix">Robotics Engineer,</span>
+          <span id="heroRoleCycle" class="hero__role-cycle"></span><span class="hero__caret" aria-hidden="true"></span>
+        </p>
         <p class="hero__tagline" id="heroTagline">
           I turn sparse 4D radar returns into usable maps for GPS-denied flight,
           and help reinforcement-learning policies improve safely with a person in the loop.
@@ -106,6 +112,9 @@
     <!-- ===== About ===== -->
     <section class="section" id="about">
       <div class="section__inner">
+        <div class="humanoid-greeter reveal" id="humanoidGreeter" aria-hidden="true">
+          <img class="humanoid-greeter__img" src="assets/images/robot-greeter.svg" alt="" width="60" height="60" />
+        </div>
         <p class="section__eyebrow">About</p>
         <h2 class="section__title">Turning learned policies into things that work on real hardware</h2>
         <div class="about__grid">
@@ -118,6 +127,27 @@
     <!-- ===== Projects ===== -->
     <section class="section" id="projects">
       <div class="section__inner">
+        <div class="project-dealer reveal" id="projectDealer" aria-hidden="true">
+          <svg class="project-dealer__svg" viewBox="0 0 120 90">
+            <defs>
+              <linearGradient id="dealerArmGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#22d3ee" />
+                <stop offset="100%" stop-color="#c026d3" />
+              </linearGradient>
+              <radialGradient id="dealerJointGrad" cx="35%" cy="35%" r="65%">
+                <stop offset="0%" stop-color="#4a4f5c" />
+                <stop offset="100%" stop-color="#1c1e24" />
+              </radialGradient>
+            </defs>
+            <circle cx="60" cy="8" r="7" fill="url(#dealerJointGrad)" />
+            <line x1="60" y1="8" x2="34" y2="42" stroke="url(#dealerArmGrad)" stroke-width="7" stroke-linecap="round" />
+            <circle cx="34" cy="42" r="6" fill="url(#dealerJointGrad)" stroke="#22d3ee" stroke-width="1.5" />
+            <line x1="34" y1="42" x2="60" y2="70" stroke="url(#dealerArmGrad)" stroke-width="7" stroke-linecap="round" />
+            <circle cx="60" cy="70" r="4" fill="url(#dealerJointGrad)" />
+            <line x1="60" y1="70" x2="48" y2="84" stroke="#c026d3" stroke-width="5" stroke-linecap="round" />
+            <line x1="60" y1="70" x2="72" y2="84" stroke="#c026d3" stroke-width="5" stroke-linecap="round" />
+          </svg>
+        </div>
         <p class="section__eyebrow">Projects</p>
         <h2 class="section__title">Selected work</h2>
         <p class="section__subtitle">
@@ -178,32 +208,61 @@
   <!-- ===== Drone companion (decorative scroll guide, click to jump to top) ===== -->
   <button class="drone-companion" id="droneCompanion" aria-label="Scroll to top" title="Scroll to top">
     <span class="drone-companion__bob">
-      <svg class="drone-companion__svg" viewBox="0 0 100 100" aria-hidden="true">
+      <svg class="drone-companion__svg" viewBox="0 0 100 80" aria-hidden="true">
         <defs>
-          <linearGradient id="droneBodyGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#ff8a3d" />
-            <stop offset="100%" stop-color="#ff5d3d" />
+          <linearGradient id="droneBodyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffb37a" />
+            <stop offset="55%" stop-color="#ff8a3d" />
+            <stop offset="100%" stop-color="#e0491f" />
           </linearGradient>
+          <linearGradient id="droneArmGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#5a5f6e" />
+            <stop offset="100%" stop-color="#262931" />
+          </linearGradient>
+          <radialGradient id="droneMotorGrad" cx="35%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#4a4f5c" />
+            <stop offset="100%" stop-color="#1c1e24" />
+          </radialGradient>
         </defs>
-        <line x1="38" y1="46" x2="18" y2="30" class="drone-companion__arm" />
-        <line x1="62" y1="46" x2="82" y2="30" class="drone-companion__arm" />
-        <line x1="38" y1="60" x2="18" y2="76" class="drone-companion__arm" />
-        <line x1="62" y1="60" x2="82" y2="76" class="drone-companion__arm" />
-        <g class="drone-companion__rotor" style="transform-origin: 18px 30px">
-          <circle cx="18" cy="30" r="8" class="drone-companion__rotor-ring" />
+
+        <line x1="50" y1="38" x2="18" y2="16" stroke="url(#droneArmGrad)" stroke-width="4.5" stroke-linecap="round" />
+        <line x1="50" y1="38" x2="82" y2="16" stroke="url(#droneArmGrad)" stroke-width="4.5" stroke-linecap="round" />
+        <line x1="50" y1="44" x2="18" y2="60" stroke="url(#droneArmGrad)" stroke-width="4.5" stroke-linecap="round" />
+        <line x1="50" y1="44" x2="82" y2="60" stroke="url(#droneArmGrad)" stroke-width="4.5" stroke-linecap="round" />
+
+        <g class="drone-companion__rotor" style="transform-origin: 18px 16px">
+          <circle cx="18" cy="16" r="11" fill="none" stroke="#ff8a3d" stroke-width="1.4" opacity="0.35" />
+          <circle cx="18" cy="16" r="8" fill="none" stroke="#ff8a3d" stroke-width="1.8" opacity="0.55" stroke-dasharray="3 4" />
         </g>
-        <g class="drone-companion__rotor" style="transform-origin: 82px 30px">
-          <circle cx="82" cy="30" r="8" class="drone-companion__rotor-ring" />
+        <g class="drone-companion__rotor" style="transform-origin: 82px 16px">
+          <circle cx="82" cy="16" r="11" fill="none" stroke="#ff8a3d" stroke-width="1.4" opacity="0.35" />
+          <circle cx="82" cy="16" r="8" fill="none" stroke="#ff8a3d" stroke-width="1.8" opacity="0.55" stroke-dasharray="3 4" />
         </g>
-        <g class="drone-companion__rotor" style="transform-origin: 18px 76px">
-          <circle cx="18" cy="76" r="8" class="drone-companion__rotor-ring" />
+        <g class="drone-companion__rotor" style="transform-origin: 18px 60px">
+          <circle cx="18" cy="60" r="11" fill="none" stroke="#ff8a3d" stroke-width="1.4" opacity="0.35" />
+          <circle cx="18" cy="60" r="8" fill="none" stroke="#ff8a3d" stroke-width="1.8" opacity="0.55" stroke-dasharray="3 4" />
         </g>
-        <g class="drone-companion__rotor" style="transform-origin: 82px 76px">
-          <circle cx="82" cy="76" r="8" class="drone-companion__rotor-ring" />
+        <g class="drone-companion__rotor" style="transform-origin: 82px 60px">
+          <circle cx="82" cy="60" r="11" fill="none" stroke="#ff8a3d" stroke-width="1.4" opacity="0.35" />
+          <circle cx="82" cy="60" r="8" fill="none" stroke="#ff8a3d" stroke-width="1.8" opacity="0.55" stroke-dasharray="3 4" />
         </g>
-        <ellipse cx="50" cy="53" rx="19" ry="11" fill="url(#droneBodyGrad)" />
-        <circle cx="50" cy="53" r="5.5" fill="#0a0a0d" />
-        <circle cx="50" cy="53" r="3" fill="#8fd7ff" />
+
+        <circle cx="18" cy="16" r="5.5" fill="url(#droneMotorGrad)" />
+        <circle cx="82" cy="16" r="5.5" fill="url(#droneMotorGrad)" />
+        <circle cx="18" cy="60" r="5.5" fill="url(#droneMotorGrad)" />
+        <circle cx="82" cy="60" r="5.5" fill="url(#droneMotorGrad)" />
+
+        <circle cx="18" cy="16" r="1.6" fill="#ff4d4d" />
+        <circle cx="18" cy="60" r="1.6" fill="#ff4d4d" />
+        <circle cx="82" cy="16" r="1.6" fill="#4dff88" />
+        <circle cx="82" cy="60" r="1.6" fill="#4dff88" />
+
+        <ellipse cx="50" cy="41" rx="20" ry="12" fill="url(#droneBodyGrad)" />
+        <ellipse cx="50" cy="37" rx="14" ry="6" fill="#fff" opacity="0.18" />
+
+        <circle cx="50" cy="54" r="6" fill="#1c1e24" />
+        <circle cx="50" cy="54" r="3.4" fill="#0a0a0d" />
+        <circle cx="48.5" cy="52.5" r="1.1" fill="#8fd7ff" />
       </svg>
     </span>
   </button>

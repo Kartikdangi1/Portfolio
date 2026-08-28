@@ -17,7 +17,6 @@
   function renderSiteInfo() {
     document.title = `${SITE.name}, ${SITE.role}`;
     document.getElementById("heroName").textContent = SITE.name;
-    document.getElementById("heroRole").textContent = SITE.role;
     document.getElementById("heroTagline").textContent = SITE.tagline;
     document.getElementById("aboutText").textContent = SITE.about;
     document.getElementById("footerName").textContent = SITE.name;
@@ -36,7 +35,12 @@
 
     const skillsEl = document.getElementById("skillsCloud");
     skillsEl.innerHTML = SITE.skills
-      .map((s) => `<span class="skill-pill">${escapeHtml(s)}</span>`)
+      .map((s, i) => {
+        const rot = randomBetween(-8, 8).toFixed(2);
+        const delay = (i * 0.045 + randomBetween(-0.02, 0.02)).toFixed(2);
+        const style = `--deal-rot:${rot}deg;--deal-delay:${delay}s`;
+        return `<span class="skill-pill reveal" style="${style}">${escapeHtml(s)}</span>`;
+      })
       .join("");
 
     const emailLink = document.getElementById("emailLink");
@@ -76,30 +80,9 @@
       </div>`;
   }
 
-  // The IDMP project is literally a robot arm doing collision-aware pick and
-  // place, so its card gets placed on the page the same way: a small arm
-  // swoops in, "grips" the card, and sets it down. See .cobot-card-wrap in
-  // style.css for the choreography.
-  const COBOT_CARD_ID = "idmp-cobot";
-  const COBOT_ARM_SVG = `
-    <svg class="cobot-arm__svg" viewBox="0 0 100 70" aria-hidden="true">
-      <defs>
-        <linearGradient id="cobotArmGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#22d3ee" />
-          <stop offset="100%" stop-color="#c026d3" />
-        </linearGradient>
-      </defs>
-      <circle cx="50" cy="4" r="5" fill="#3a3f4d" />
-      <line x1="50" y1="4" x2="32" y2="30" stroke="url(#cobotArmGrad)" stroke-width="6" stroke-linecap="round" />
-      <line x1="32" y1="30" x2="50" y2="54" stroke="url(#cobotArmGrad)" stroke-width="6" stroke-linecap="round" />
-      <circle cx="32" cy="30" r="4.5" fill="#0a0a0d" stroke="#22d3ee" stroke-width="1.5" />
-      <line x1="50" y1="54" x2="41" y2="64" stroke="#c026d3" stroke-width="4" stroke-linecap="round" />
-      <line x1="50" y1="54" x2="59" y2="64" stroke="#c026d3" stroke-width="4" stroke-linecap="round" />
-    </svg>`;
-
-  function projectCardHtml(p, skipReveal) {
+  function projectCardHtml(p) {
     return `
-      <article class="project-card ${p.featured ? "project-card--featured" : ""}${skipReveal ? "" : " reveal"}" data-id="${escapeHtml(p.id)}" tabindex="0">
+      <article class="project-card ${p.featured ? "project-card--featured" : ""}" data-id="${escapeHtml(p.id)}" tabindex="0">
         ${cardMediaHtml(p)}
         <div class="project-card__body">
           <h3 class="project-card__title">${escapeHtml(p.title)}</h3>
@@ -111,18 +94,28 @@
       </article>`;
   }
 
+  // Every project card is "dealt" into place like a card off a stack --
+  // randomized per card (rotation/drift/timing) so the grid settles with
+  // natural variation instead of one uniform animation. The small robot
+  // arm near the section heading (#projectDealer in index.html) plays the
+  // "dealing" motion while this is happening.
+  function randomBetween(min, max) {
+    return min + Math.random() * (max - min);
+  }
+
   function renderProjects() {
     const grid = document.getElementById("projectsGrid");
     const sorted = [...PROJECTS].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
 
     grid.innerHTML = sorted
-      .map((p) => {
-        const isCobot = p.id === COBOT_CARD_ID;
-        const card = projectCardHtml(p, isCobot);
-        if (!isCobot) return card;
+      .map((p, i) => {
+        const card = projectCardHtml(p);
+        const rot = randomBetween(-6, 6).toFixed(2);
+        const x = randomBetween(-36, 36).toFixed(1);
+        const delay = (i * 0.09 + randomBetween(-0.03, 0.03)).toFixed(2);
+        const style = `--deal-rot:${rot}deg;--deal-x:${x}px;--deal-delay:${delay}s`;
         return `
-          <div class="cobot-card-wrap reveal">
-            <div class="cobot-arm">${COBOT_ARM_SVG}</div>
+          <div class="project-deal-wrap reveal" style="${style}">
             ${card}
           </div>`;
       })
@@ -272,6 +265,46 @@
     );
   }
 
+  /* ---------------- Hero typewriter ---------------- */
+  function setupHeroTypewriter() {
+    const prefixEl = document.getElementById("heroRolePrefix");
+    const cycleEl = document.getElementById("heroRoleCycle");
+    if (!cycleEl || !SITE.roleCycle || !SITE.roleCycle.length) return;
+
+    if (prefixEl && SITE.roleCyclePrefix) prefixEl.textContent = SITE.roleCyclePrefix;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      cycleEl.textContent = SITE.roleCycle[0];
+      return;
+    }
+
+    const words = SITE.roleCycle;
+    let wordIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+
+    function tick() {
+      const word = words[wordIndex];
+      charIndex += deleting ? -1 : 1;
+      cycleEl.textContent = word.slice(0, charIndex);
+
+      let delay = deleting ? 35 : 65;
+
+      if (!deleting && charIndex === word.length) {
+        delay = 1800;
+        deleting = true;
+      } else if (deleting && charIndex === 0) {
+        deleting = false;
+        wordIndex = (wordIndex + 1) % words.length;
+        delay = 400;
+      }
+
+      window.setTimeout(tick, delay);
+    }
+
+    tick();
+  }
+
   /* ---------------- Scroll reveal ---------------- */
   function setupReveal() {
     const targets = document.querySelectorAll(".reveal");
@@ -314,6 +347,12 @@
     let lastScrollY = window.scrollY;
     let ticking = true;
 
+    // A seeded, non-repeating hover wobble (two sine waves at an irrational-
+    // ish frequency ratio) layered on top of the scroll-follow position, so
+    // the drone reads as hovering rather than snapping along a dead-straight
+    // line even when scroll is idle. Phase is randomized per page load.
+    const wobbleSeed = Math.random() * 1000;
+
     function frame() {
       if (!ticking) return;
 
@@ -333,7 +372,11 @@
         currentY += (targetY - currentY) * 0.07;
         currentTilt += (tiltTarget - currentTilt) * 0.12;
 
-        drone.style.transform = `translateY(${currentY.toFixed(1)}px) rotate(${currentTilt.toFixed(1)}deg)`;
+        const t = performance.now() / 1000;
+        const wobbleY = Math.sin(t * 0.7 + wobbleSeed) * 3.5 + Math.sin(t * 1.9 + wobbleSeed * 2) * 1.5;
+        const wobbleX = Math.sin(t * 0.55 + wobbleSeed * 1.3) * 3;
+
+        drone.style.transform = `translate(${wobbleX.toFixed(1)}px, ${(currentY + wobbleY).toFixed(1)}px) rotate(${currentTilt.toFixed(1)}deg)`;
       } else {
         drone.style.transform = "";
       }
@@ -358,5 +401,6 @@
     setupNav();
     setupReveal();
     setupDroneCompanion();
+    setupHeroTypewriter();
   });
 })();

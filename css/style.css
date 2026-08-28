@@ -179,6 +179,29 @@ h1, h2, h3, p { margin: 0; }
 }
 
 .hero__content { position: relative; max-width: 760px; text-align: center; margin: 0 auto; }
+
+.hero__avatar {
+  width: 132px;
+  height: 132px;
+  margin: 0 auto 1.6rem;
+  border-radius: 50%;
+  padding: 4px;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+  animation: avatarFloat 5s ease-in-out infinite;
+}
+.hero__avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  border: 3px solid var(--bg);
+}
+@keyframes avatarFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
 .eyebrow {
   font-family: var(--font-mono);
   color: var(--accent);
@@ -201,6 +224,19 @@ h1, h2, h3, p { margin: 0; }
   font-size: clamp(1.1rem, 2.4vw, 1.5rem);
   font-weight: 600;
   color: var(--accent-2);
+}
+.hero__role-cycle { font-family: var(--font-mono); }
+.hero__caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  background: var(--accent-2);
+  vertical-align: -0.15em;
+  animation: caretBlink 0.85s step-end infinite;
+}
+@keyframes caretBlink {
+  50% { opacity: 0; }
 }
 .hero__tagline {
   margin: 1.4rem auto 0;
@@ -268,6 +304,39 @@ h1, h2, h3, p { margin: 0; }
 }
 
 /* ============================================================
+   Humanoid greeter (one-time wave when About scrolls into view)
+   ============================================================ */
+#about .section__inner { position: relative; }
+.humanoid-greeter {
+  position: absolute;
+  top: 4px;
+  right: 0;
+  width: 68px;
+  opacity: 0;
+  transform: translateY(16px) scale(0.7) rotate(-8deg);
+}
+.humanoid-greeter.is-visible {
+  animation: greeterEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+             greeterGreet 0.5s ease-in-out 0.65s 3;
+}
+.humanoid-greeter__img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 8px 16px rgba(255, 138, 61, 0.35));
+}
+@keyframes greeterEnter {
+  to { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+}
+@keyframes greeterGreet {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(-6deg) scale(1.06); }
+}
+@media (max-width: 900px) {
+  .humanoid-greeter { display: none; }
+}
+
+/* ============================================================
    About
    ============================================================ */
 .about__grid {
@@ -332,52 +401,56 @@ h1, h2, h3, p { margin: 0; }
   border-color: transparent;
 }
 
-/* The IDMP cobot card gets placed by an animated robot arm instead of the
-   generic fade-up reveal -- see COBOT_ARM_SVG in main.js for the markup. */
-.cobot-card-wrap {
-  position: relative;
-}
-.cobot-card-wrap.reveal {
-  /* cancel the generic .reveal fade -- the arm/card animate individually */
+/* Every project card is "dealt" into place -- randomized per-card rotation/
+   drift/timing (set as inline custom properties in main.js) instead of one
+   uniform slide, so the grid settles with natural variation. */
+.project-deal-wrap.reveal {
+  /* cancel the generic .reveal fade -- the keyframe below drives it instead */
   opacity: 1;
   transform: none;
   transition: none;
 }
-.cobot-card-wrap .project-card {
+.project-deal-wrap .project-card {
   opacity: 0;
-  transform: translateY(-54px) rotate(-4deg);
+  transform: translate(var(--deal-x, 0px), -60px) rotate(var(--deal-rot, 0deg));
 }
-.cobot-card-wrap.is-visible .project-card {
-  animation: cobotDrop 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s forwards;
+.project-deal-wrap.is-visible .project-card {
+  animation: cardDeal 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: var(--deal-delay, 0s);
 }
-.cobot-arm {
-  position: absolute;
-  top: -54px;
-  left: 50%;
-  width: 82px;
-  height: 58px;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 5;
-  transform: translateX(-50%) translateY(-30px);
-  filter: drop-shadow(0 6px 12px rgba(34, 211, 238, 0.35));
-}
-.cobot-arm__svg { width: 100%; height: 100%; }
-.cobot-card-wrap.is-visible .cobot-arm {
-  animation: cobotArmSwoop 1.15s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+@keyframes cardDeal {
+  0% { opacity: 0; transform: translate(var(--deal-x, 0px), -60px) rotate(var(--deal-rot, 0deg)); }
+  55% { opacity: 1; }
+  75% { transform: translate(calc(var(--deal-x, 0px) * 0.15), 6px) rotate(calc(var(--deal-rot, 0deg) * -0.3)); }
+  100% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
 }
 
-@keyframes cobotDrop {
-  0% { opacity: 0; transform: translateY(-54px) rotate(-4deg); }
-  45% { opacity: 1; }
-  70% { transform: translateY(6px) rotate(1deg); }
-  100% { opacity: 1; transform: translateY(0) rotate(0deg); }
+/* The dealer arm near the "Selected work" heading -- plays a dealing
+   motion once when the projects grid scrolls into view. */
+#projects .section__inner { position: relative; }
+.project-dealer {
+  position: absolute;
+  top: -8px;
+  right: 0;
+  width: 76px;
+  opacity: 0;
+  transform: translateY(-16px) rotate(-6deg);
+  pointer-events: none;
+  filter: drop-shadow(0 8px 14px rgba(192, 38, 211, 0.35));
 }
-@keyframes cobotArmSwoop {
-  0% { opacity: 0; transform: translateX(-50%) translateY(-40px) rotate(-10deg); }
-  35% { opacity: 1; transform: translateX(-50%) translateY(4px) rotate(3deg); }
-  55% { opacity: 1; transform: translateX(-50%) translateY(4px) rotate(3deg); }
-  100% { opacity: 0; transform: translateX(-50%) translateY(-34px) rotate(-6deg); }
+.project-dealer.is-visible {
+  animation: dealerSwing 0.7s ease-out forwards, dealerLoop 0.7s ease-in-out 0.7s 2;
+}
+.project-dealer__svg { width: 100%; height: auto; display: block; }
+@keyframes dealerSwing {
+  to { opacity: 1; transform: translateY(0) rotate(0deg); }
+}
+@keyframes dealerLoop {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(6px) rotate(8deg); }
+}
+@media (max-width: 900px) {
+  .project-dealer { display: none; }
 }
 
 .project-card__media {
@@ -465,6 +538,18 @@ h1, h2, h3, p { margin: 0; }
   border-color: var(--accent);
   color: var(--accent-2);
   transform: translateY(-2px);
+}
+.skill-pill.reveal {
+  opacity: 0;
+  transform: scale(0.6) rotate(var(--deal-rot, 0deg));
+  transition: none;
+}
+.skill-pill.reveal.is-visible {
+  animation: pillPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: var(--deal-delay, 0s);
+}
+@keyframes pillPop {
+  to { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
 /* ============================================================
@@ -639,19 +724,7 @@ h1, h2, h3, p { margin: 0; }
   transition: filter 0.3s var(--ease);
 }
 .drone-companion:hover .drone-companion__svg { filter: drop-shadow(0 10px 24px rgba(255, 93, 61, 0.6)); }
-.drone-companion__arm {
-  stroke: var(--text-faint);
-  stroke-width: 3;
-  stroke-linecap: round;
-}
-.drone-companion__rotor-ring {
-  fill: none;
-  stroke: var(--accent-2);
-  stroke-width: 2.5;
-  stroke-dasharray: 4 3;
-  opacity: 0.85;
-}
-.drone-companion__rotor { animation: droneSpin 0.7s linear infinite; }
+.drone-companion__rotor { animation: droneSpin 0.6s linear infinite; }
 
 @keyframes droneBob {
   0%, 100% { transform: translateY(0) rotate(0deg); }

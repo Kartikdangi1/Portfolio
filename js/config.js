@@ -9,6 +9,17 @@
 const SITE = {
   name: "Kartik Dangi",
   role: "Robotics Engineer, Aerial Perception & Learning",
+  // Static prefix shown before the typewriter-cycled part in the hero.
+  roleCyclePrefix: "Robotics Engineer,",
+  // Cycled by the typewriter effect in the hero, after the prefix above.
+  // Keep entries short (fits one line).
+  roleCycle: [
+    "Aerial Perception & Learning",
+    "Radar-Based SLAM",
+    "Reinforcement Learning",
+    "Robotic Manipulation",
+    "UAV Systems"
+  ],
   tagline:
     "I turn sparse 4D radar returns into usable maps for GPS-denied flight, and help reinforcement-learning policies improve safely with a person in the loop.",
   location: "",
