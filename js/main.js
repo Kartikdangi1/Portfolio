@@ -361,12 +361,23 @@
 
     const words = SITE.roleCycle.map((w) => pick(w, currentLang));
 
+    // Pick a random next word, excluding whichever one is currently shown
+    // so it never re-types the same phrase twice in a row.
+    function randomNextIndex(exclude) {
+      if (words.length <= 1) return 0;
+      let next;
+      do {
+        next = Math.floor(Math.random() * words.length);
+      } while (next === exclude);
+      return next;
+    }
+
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      cycleEl.textContent = words[0];
+      cycleEl.textContent = words[randomNextIndex(-1)];
       return;
     }
 
-    let wordIndex = 0;
+    let wordIndex = randomNextIndex(-1);
     let charIndex = 0;
     let deleting = false;
 
@@ -382,7 +393,7 @@
         deleting = true;
       } else if (deleting && charIndex === 0) {
         deleting = false;
-        wordIndex = (wordIndex + 1) % words.length;
+        wordIndex = randomNextIndex(wordIndex);
         delay = 400;
       }
 

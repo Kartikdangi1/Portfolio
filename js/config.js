@@ -13,14 +13,40 @@ const SITE = {
   // Bilingual fields use { en, de } and are resolved with pick(field, lang);
   // a plain string also works and is used for every language.
   roleCyclePrefix: { en: "Robotics Engineer,", de: "Robotik-Ingenieur," },
-  // Cycled by the typewriter effect in the hero, after the prefix above.
-  // Keep entries short (fits one line).
+  // Cycled by the typewriter effect in the hero (randomized order, see
+  // setupHeroTypewriter in main.js). Keep entries short (fits one line) and
+  // grounded in real work -- this isn't a buzzword generator.
   roleCycle: [
     { en: "Aerial Perception & Learning", de: "Luftgestützte Wahrnehmung & Lernen" },
     { en: "Radar-Based SLAM", de: "Radarbasiertes SLAM" },
     { en: "Human-in-the-Loop RL", de: "Human-in-the-Loop-RL" },
     { en: "Vision-Guided Manipulation", de: "Bildgestützte Manipulation" },
-    { en: "UAV Sensor Fusion", de: "UAV-Sensorfusion" }
+    { en: "UAV Sensor Fusion", de: "UAV-Sensorfusion" },
+    { en: "4D Radar Perception", de: "4D-Radar-Wahrnehmung" },
+    { en: "Multi-Object Tracking", de: "Multi-Objekt-Tracking" },
+    { en: "Reactive Collision Avoidance", de: "Reaktive Kollisionsvermeidung" },
+    { en: "Cobot Motion Planning", de: "Cobot-Bewegungsplanung" },
+    { en: "Reinforcement Learning Research", de: "Reinforcement-Learning-Forschung" },
+    { en: "Autonomous Exploration", de: "Autonome Exploration" },
+    { en: "Radar-Camera Fusion", de: "Radar-Kamera-Fusion" },
+    { en: "Real-Time SLAM", de: "Echtzeit-SLAM" },
+    { en: "Robotic Assembly Automation", de: "Automatisierte Roboter-Montage" },
+    { en: "Hand-Gesture Robot Control", de: "Handgesten-Robotersteuerung" },
+    { en: "GPS-Denied Navigation", de: "GPS-freie Navigation" },
+    { en: "Distance-Field Planning", de: "Distanzfeld-Planung" },
+    { en: "Sample-Efficient RL", de: "Sample-effizientes RL" },
+    { en: "Drone Autonomy", de: "Drohnen-Autonomie" },
+    { en: "Computer Vision Pipelines", de: "Computer-Vision-Pipelines" },
+    { en: "Sensor Fusion Engineering", de: "Sensorfusion-Engineering" },
+    { en: "PX4 Flight Systems", de: "PX4-Flugsysteme" },
+    { en: "ROS 2 Systems Design", de: "ROS-2-Systemdesign" },
+    { en: "Occupancy Grid Mapping", de: "Belegungsgitter-Kartierung" },
+    { en: "Actor-Critic RL", de: "Actor-Critic-RL" },
+    { en: "Edge AI on Jetson", de: "Edge-KI auf Jetson" },
+    { en: "Vision-Based Reward Modeling", de: "Bildbasierte Belohnungsmodelle" },
+    { en: "Robotic Perception Systems", de: "Robotische Wahrnehmungssysteme" },
+    { en: "Next-Best-View Exploration", de: "Next-Best-View-Exploration" },
+    { en: "Simulation-to-Reality Transfer", de: "Sim-to-Real-Transfer" }
   ],
   tagline: {
     en: "I turn sparse 4D radar returns into usable maps for GPS-denied flight, and build human-in-the-loop reinforcement learning systems that improve safely on real hardware.",
