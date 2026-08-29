@@ -150,6 +150,34 @@ h1, h2, h3, p { margin: 0; }
 .theme-toggle__icon--moon { display: none; }
 :root[data-theme="light"] .theme-toggle__icon--sun { display: none; }
 :root[data-theme="light"] .theme-toggle__icon--moon { display: block; }
+
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--ghost-bg);
+  padding: 3px;
+  gap: 2px;
+}
+.lang-toggle__btn {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-faint);
+  background: none;
+  border: none;
+  border-radius: 999px;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease);
+}
+.lang-toggle__btn:hover { color: var(--text-dim); }
+.lang-toggle__btn.is-active {
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+}
 .nav__brand {
   font-family: var(--font-mono);
   font-weight: 700;

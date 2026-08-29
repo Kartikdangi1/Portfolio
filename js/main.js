@@ -13,14 +13,19 @@
   const youtubeEmbedUrl = (id) =>
     `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&rel=0`;
 
+  // The static HTML default stays English (SEO's canonical language) --
+  // this is only the client-side toggle's state, restored from a return
+  // visitor's earlier choice.
+  let currentLang = localStorage.getItem("lang") || "en";
+
   /* ---------------- Site info ---------------- */
   function renderSiteInfo() {
     document.title = `${SITE.name}, ${SITE.role}`;
     document.getElementById("heroName").textContent = SITE.name;
-    document.getElementById("heroTagline").textContent = SITE.tagline;
+    document.getElementById("heroTagline").textContent = pick(SITE.tagline, currentLang);
     const aboutParagraphs = Array.isArray(SITE.about) ? SITE.about : [SITE.about];
     document.getElementById("aboutText").innerHTML = aboutParagraphs
-      .map((p) => `<p>${escapeHtml(p)}</p>`)
+      .map((p) => `<p>${escapeHtml(pick(p, currentLang))}</p>`)
       .join("");
     document.getElementById("footerName").textContent = SITE.name;
     document.getElementById("year").textContent = new Date().getFullYear();
@@ -31,7 +36,7 @@
         (s) => `
         <div class="about__stat">
           <div class="value">${escapeHtml(s.value)}</div>
-          <div class="label">${escapeHtml(s.label)}</div>
+          <div class="label">${escapeHtml(pick(s.label, currentLang))}</div>
         </div>`
       )
       .join("");
@@ -91,10 +96,10 @@
       <article class="project-card ${p.featured ? "project-card--featured" : ""}" data-id="${escapeHtml(p.id)}" tabindex="0">
         ${cardMediaHtml(p)}
         <div class="project-card__body">
-          <h3 class="project-card__title">${escapeHtml(p.title)}</h3>
-          <p class="project-card__tagline">${escapeHtml(p.tagline)}</p>
+          <h3 class="project-card__title">${escapeHtml(pick(p.title, currentLang))}</h3>
+          <p class="project-card__tagline">${escapeHtml(pick(p.tagline, currentLang))}</p>
           <div class="project-card__tags">
-            ${p.tags.map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join("")}
+            ${p.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}
           </div>
         </div>
       </article>`;
@@ -159,14 +164,16 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path d="M8 5v14l11-7z"/>
           </svg>
-          <span>Demo video coming soon</span>
+          <span>${escapeHtml(t("modal.videoComingSoon", currentLang))}</span>
         </div>`;
       return;
     }
 
+    const itemTitle = pick(item.title, currentLang) || pick(project.title, currentLang);
+
     if (item.type === "youtube") {
       modalMedia.innerHTML = `<iframe src="${youtubeEmbedUrl(item.id)}"
-        title="${escapeHtml(item.title || project.title)}"
+        title="${escapeHtml(itemTitle)}"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen loading="lazy"></iframe>`;
     } else if (item.type === "video") {
@@ -184,7 +191,7 @@
         });
       }
     } else if (item.type === "image") {
-      modalMedia.innerHTML = `<img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.title || project.title)}" loading="lazy" />`;
+      modalMedia.innerHTML = `<img src="${escapeHtml(item.src)}" alt="${escapeHtml(itemTitle)}" loading="lazy" />`;
     }
   }
 
@@ -194,13 +201,13 @@
 
     lastFocused = document.activeElement;
 
-    modalTitle.textContent = project.title;
-    modalDescription.textContent = project.description;
-    modalTags.innerHTML = project.tags.map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join("");
+    modalTitle.textContent = pick(project.title, currentLang);
+    modalDescription.textContent = pick(project.description, currentLang);
+    modalTags.innerHTML = project.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
 
     modalPipeline.innerHTML =
       project.pipeline && project.pipeline.length
-        ? `<h4>How it works</h4><ol>${project.pipeline.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}</ol>`
+        ? `<h4>${escapeHtml(t("modal.howItWorks", currentLang))}</h4><ol>${project.pipeline.map((step) => `<li>${escapeHtml(pick(step, currentLang))}</li>`).join("")}</ol>`
         : "";
 
     renderMediaItem(project, 0);
@@ -208,7 +215,7 @@
     modalThumbs.innerHTML = project.media
       .map(
         (item, i) =>
-          `<button class="modal__thumb ${i === 0 ? "active" : ""}" data-index="${i}">${escapeHtml(item.title || `Media ${i + 1}`)}</button>`
+          `<button class="modal__thumb ${i === 0 ? "active" : ""}" data-index="${i}">${escapeHtml(pick(item.title, currentLang) || `Media ${i + 1}`)}</button>`
       )
       .join("");
 
@@ -221,9 +228,9 @@
     });
 
     const links = [
-      project.links?.github && { label: "View code", href: project.links.github },
-      project.links?.demo && { label: "Live demo", href: project.links.demo },
-      project.links?.writeup && { label: "Read write-up", href: project.links.writeup }
+      project.links?.github && { label: t("modal.viewCode", currentLang), href: project.links.github },
+      project.links?.demo && { label: t("modal.liveDemo", currentLang), href: project.links.demo },
+      project.links?.writeup && { label: t("modal.readWriteup", currentLang), href: project.links.writeup }
     ].filter(Boolean);
 
     modalLinks.innerHTML = links
@@ -299,20 +306,66 @@
     });
   }
 
+  /* ---------------- Language toggle ---------------- */
+  function updateLangToggleUI() {
+    document.querySelectorAll(".lang-toggle__btn").forEach((btn) => {
+      btn.classList.toggle("is-active", btn.dataset.lang === currentLang);
+      btn.setAttribute("aria-pressed", String(btn.dataset.lang === currentLang));
+    });
+  }
+
+  // Re-renders every language-dependent part of the page in place: the
+  // dynamic content (site info, projects grid, typewriter) plus every
+  // static-chrome element tagged with data-i18n.
+  function applyLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem("lang", lang);
+    document.documentElement.lang = lang;
+
+    renderSiteInfo();
+    renderProjects();
+    setupHeroTypewriter();
+    setupReveal();
+
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+      el.textContent = t(el.dataset.i18n, lang);
+    });
+
+    updateLangToggleUI();
+  }
+
+  function setupLangToggle() {
+    document.querySelectorAll(".lang-toggle__btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (btn.dataset.lang !== currentLang) applyLanguage(btn.dataset.lang);
+      });
+    });
+  }
+
   /* ---------------- Hero typewriter ---------------- */
+  let typewriterTimeoutId = null;
+
   function setupHeroTypewriter() {
     const prefixEl = document.getElementById("heroRolePrefix");
     const cycleEl = document.getElementById("heroRoleCycle");
     if (!cycleEl || !SITE.roleCycle || !SITE.roleCycle.length) return;
 
-    if (prefixEl && SITE.roleCyclePrefix) prefixEl.textContent = SITE.roleCyclePrefix;
+    // Re-running this on a language switch replaces the word list -- clear
+    // any in-flight loop first so two ticks never fight over the same text.
+    if (typewriterTimeoutId !== null) {
+      window.clearTimeout(typewriterTimeoutId);
+      typewriterTimeoutId = null;
+    }
+
+    if (prefixEl && SITE.roleCyclePrefix) prefixEl.textContent = pick(SITE.roleCyclePrefix, currentLang);
+
+    const words = SITE.roleCycle.map((w) => pick(w, currentLang));
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      cycleEl.textContent = SITE.roleCycle[0];
+      cycleEl.textContent = words[0];
       return;
     }
 
-    const words = SITE.roleCycle;
     let wordIndex = 0;
     let charIndex = 0;
     let deleting = false;
@@ -333,7 +386,7 @@
         delay = 400;
       }
 
-      window.setTimeout(tick, delay);
+      typewriterTimeoutId = window.setTimeout(tick, delay);
     }
 
     tick();
@@ -430,12 +483,13 @@
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".section").forEach((el) => el.classList.add("reveal"));
 
-    renderSiteInfo();
-    renderProjects();
     setupNav();
     setupThemeToggle();
-    setupReveal();
+    setupLangToggle();
     setupDroneCompanion();
-    setupHeroTypewriter();
+    // Renders site info + projects, restarts the typewriter, re-arms scroll
+    // reveal, and applies the current language to the static chrome -- all
+    // in one pass, whether this is the first load or a stored preference.
+    applyLanguage(currentLang);
   });
 })();

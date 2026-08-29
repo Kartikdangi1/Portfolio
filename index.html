@@ -72,12 +72,16 @@
     <div class="nav__inner">
       <a href="#home" class="nav__brand">KD<span class="dot">.</span></a>
       <nav class="nav__links" id="navLinks">
-        <a href="#about">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#skills">Skills</a>
-        <a href="#contact">Contact</a>
+        <a href="#about" data-i18n="nav.about">About</a>
+        <a href="#projects" data-i18n="nav.projects">Projects</a>
+        <a href="#skills" data-i18n="nav.skills">Skills</a>
+        <a href="#contact" data-i18n="nav.contact">Contact</a>
       </nav>
       <div class="nav__actions">
+        <div class="lang-toggle" id="langToggle" role="group" aria-label="Language">
+          <button type="button" class="lang-toggle__btn" data-lang="en" aria-pressed="true">EN</button>
+          <button type="button" class="lang-toggle__btn" data-lang="de" aria-pressed="false">DE</button>
+        </div>
         <button class="theme-toggle" id="themeToggle" aria-label="Switch to light theme" title="Switch theme">
           <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
             <circle cx="12" cy="12" r="4.2" />
@@ -87,7 +91,7 @@
             <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5Z" />
           </svg>
         </button>
-        <a href="#contact" class="btn btn--ghost nav__cta">Let's talk</a>
+        <a href="#contact" class="btn btn--ghost nav__cta" data-i18n="nav.cta">Let's talk</a>
         <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
@@ -106,7 +110,7 @@
         <div class="hero__avatar">
           <img src="assets/images/profile.jpg" alt="Kartik Dangi" width="132" height="132" />
         </div>
-        <p class="eyebrow">Hi, I'm</p>
+        <p class="eyebrow" data-i18n="hero.eyebrow">Hi, I'm</p>
         <h1 class="hero__name" id="heroName">Kartik Dangi</h1>
         <p class="hero__role" id="heroRole">
           <span id="heroRolePrefix">Robotics Engineer,</span>
@@ -117,8 +121,8 @@
           and build human-in-the-loop reinforcement learning systems that improve safely on real hardware.
         </p>
         <div class="hero__actions">
-          <a href="#projects" class="btn btn--primary">View Projects</a>
-          <a href="#contact" class="btn btn--ghost">Get in touch</a>
+          <a href="#projects" class="btn btn--primary" data-i18n="hero.viewProjects">View Projects</a>
+          <a href="#contact" class="btn btn--ghost" data-i18n="hero.getInTouch">Get in touch</a>
         </div>
       </div>
 
@@ -130,8 +134,8 @@
     <!-- ===== About ===== -->
     <section class="section" id="about">
       <div class="section__inner">
-        <p class="section__eyebrow">About</p>
-        <h2 class="section__title">Perception and learned control that work outside the lab</h2>
+        <p class="section__eyebrow" data-i18n="about.eyebrow">About</p>
+        <h2 class="section__title" data-i18n="about.title">Perception and learned control that work outside the lab</h2>
         <div class="about__grid">
           <div class="about__text" id="aboutText">
             <p>I'm a robotics engineer working across two connected areas: perception that holds up on imperfect sensors, and learned policies that keep working once they leave simulation.</p>
@@ -163,9 +167,9 @@
             </g>
           </svg>
         </div>
-        <p class="section__eyebrow">Projects</p>
-        <h2 class="section__title">Selected work</h2>
-        <p class="section__subtitle">
+        <p class="section__eyebrow" data-i18n="projects.eyebrow">Projects</p>
+        <h2 class="section__title" data-i18n="projects.title">Selected work</h2>
+        <p class="section__subtitle" data-i18n="projects.subtitle">
           A few projects worth watching, literally. Click any card to see it in action.
         </p>
         <div class="projects__grid" id="projectsGrid">
@@ -177,8 +181,8 @@
     <!-- ===== Skills ===== -->
     <section class="section" id="skills">
       <div class="section__inner">
-        <p class="section__eyebrow">Toolbox</p>
-        <h2 class="section__title">Skills &amp; technologies</h2>
+        <p class="section__eyebrow" data-i18n="skills.eyebrow">Toolbox</p>
+        <h2 class="section__title" data-i18n="skills.title">Skills &amp; technologies</h2>
         <div class="skills__cloud" id="skillsCloud"></div>
       </div>
     </section>
@@ -186,15 +190,15 @@
     <!-- ===== Contact ===== -->
     <section class="section section--contact" id="contact">
       <div class="section__inner">
-        <p class="section__eyebrow">Contact</p>
-        <h2 class="section__title">Let's build something</h2>
-        <p class="section__subtitle">
+        <p class="section__eyebrow" data-i18n="contact.eyebrow">Contact</p>
+        <h2 class="section__title" data-i18n="contact.title">Let's build something</h2>
+        <p class="section__subtitle" data-i18n="contact.subtitle">
           Open to robotics/ML roles and collaborations. The fastest way to reach me:
         </p>
         <div class="contact__actions">
-          <a href="#" id="emailLink" class="btn btn--primary">Send an email</a>
-          <a href="#" id="githubLink" class="btn btn--ghost" target="_blank" rel="noopener me">GitHub</a>
-          <a href="#" id="linkedinLink" class="btn btn--ghost" target="_blank" rel="noopener me" hidden>LinkedIn</a>
+          <a href="#" id="emailLink" class="btn btn--primary" data-i18n="contact.emailBtn">Send an email</a>
+          <a href="#" id="githubLink" class="btn btn--ghost" target="_blank" rel="noopener me" data-i18n="contact.github">GitHub</a>
+          <a href="#" id="linkedinLink" class="btn btn--ghost" target="_blank" rel="noopener me" hidden data-i18n="contact.linkedin">LinkedIn</a>
         </div>
         <p class="contact__email-text" id="contactEmailText"></p>
       </div>
@@ -202,7 +206,7 @@
   </main>
 
   <footer class="footer">
-    <p>&copy; <span id="year"></span> <span id="footerName">Kartik Dangi</span>. Built with plain HTML, CSS &amp; JS.</p>
+    <p>&copy; <span id="year"></span> <span id="footerName">Kartik Dangi</span>. <span data-i18n="footer.builtWith">Built with plain HTML, CSS &amp; JS.</span></p>
   </footer>
 
   <!-- ===== Video Modal ===== -->
@@ -271,6 +275,7 @@
     </span>
   </button>
 
+  <script src="js/i18n.js"></script>
   <script src="js/config.js"></script>
   <script src="js/projects.js"></script>
   <script src="js/main.js"></script>
