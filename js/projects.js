@@ -92,7 +92,7 @@ const PROJECTS = [
     title: "Interactive Distance Field Mapping and Planning (IDMP)",
     tagline: "Reactive, real-time collision avoidance for a 7-DoF cobot from a live distance-and-gradient field",
     description:
-      "A university project at CERI (Center for Robotics, THWS Würzburg-Schweinfurt): I migrated an existing IDMP stack from ROS 1 on a 6-DoF UR5e to ROS 2 on a 7-DoF NEURA MAiRA cobot, rebuilding the collision pipeline around an Azure Kinect depth camera with a TF2 self-filter, 18 virtual collision points, and null-space exploitation for a stable 98-100 Hz control loop that reacts to obstacles as they move instead of pausing to re-plan. I also added a MediaPipe-based worker guidance system so an operator can step through an assembly sequence hands-free with hand gestures, backed by a projector overlay for live feedback on the bench.",
+      "A university project at CERI (Center for Robotics, THWS Würzburg-Schweinfurt): I migrated an existing IDMP stack from ROS 1 on a 6-DoF UR5e to ROS 2 on a 7-DoF NEURA MAiRA cobot. I rebuilt the collision pipeline around an Azure Kinect depth camera with a TF2 self-filter and 18 virtual collision points, using null-space exploitation to keep the control loop reacting to moving obstacles at a stable 98-100 Hz instead of pausing to re-plan. I also added a MediaPipe-based worker guidance system so an operator can step through an assembly sequence hands-free with hand gestures, backed by a projector overlay for live feedback on the bench.",
     tags: ["ROS2", "Distance Fields", "Reactive Planning", "Collision Avoidance", "Cobot", "MediaPipe"],
     accent: ["#22d3ee", "#c026d3"],
     thumbnail: "assets/images/projects/idmp-distance-field.png",

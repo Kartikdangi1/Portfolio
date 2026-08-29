@@ -16,12 +16,12 @@ const SITE = {
   roleCycle: [
     "Aerial Perception & Learning",
     "Radar-Based SLAM",
-    "Reinforcement Learning",
-    "Robotic Manipulation",
-    "UAV Systems"
+    "Human-in-the-Loop RL",
+    "Vision-Guided Manipulation",
+    "UAV Sensor Fusion"
   ],
   tagline:
-    "I turn sparse 4D radar returns into usable maps for GPS-denied flight, and help reinforcement-learning policies improve safely with a person in the loop.",
+    "I turn sparse 4D radar returns into usable maps for GPS-denied flight, and build human-in-the-loop reinforcement learning systems that improve safely on real hardware.",
   location: "",
   email: "kartikdangide@gmail.com",
   resumeUrl: "",
@@ -34,7 +34,7 @@ const SITE = {
   ],
 
   stats: [
-    { label: "Theses (BEng + ongoing MEng)", value: "2" },
+    { label: "Theses (B.Eng. + ongoing M.Eng.)", value: "2" },
     { label: "RL Methods Benchmarked", value: "20+" },
     { label: "Robot / UAV Platforms Built", value: "5" }
   ],
