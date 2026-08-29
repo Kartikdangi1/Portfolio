@@ -277,6 +277,28 @@
     );
   }
 
+  /* ---------------- Theme toggle ---------------- */
+  // The initial theme is already applied by an inline script in <head>
+  // (before first paint, to avoid a flash) -- this just wires up the button.
+  function setupThemeToggle() {
+    const root = document.documentElement;
+    const button = document.getElementById("themeToggle");
+
+    function updateLabel() {
+      const isLight = root.getAttribute("data-theme") === "light";
+      button.setAttribute("aria-label", isLight ? "Switch to dark theme" : "Switch to light theme");
+    }
+
+    updateLabel();
+
+    button.addEventListener("click", () => {
+      const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+      root.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+      updateLabel();
+    });
+  }
+
   /* ---------------- Hero typewriter ---------------- */
   function setupHeroTypewriter() {
     const prefixEl = document.getElementById("heroRolePrefix");
@@ -411,6 +433,7 @@
     renderSiteInfo();
     renderProjects();
     setupNav();
+    setupThemeToggle();
     setupReveal();
     setupDroneCompanion();
     setupHeroTypewriter();
