@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200">
+  <defs>
+    <pattern id="grid-pd" width="16" height="16" patternUnits="userSpaceOnUse">
+      <path d="M16 0 L0 0 0 16" fill="none" stroke="#38bdf8" stroke-width="0.4" opacity="0.16" />
+    </pattern>
+    <marker id="arrow-pd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#7dd3fc" />
+    </marker>
+  </defs>
+  <rect width="320" height="200" fill="#12141b" />
+  <rect width="320" height="200" fill="url(#grid-pd)" />
+
+  <g stroke="#7dd3fc" stroke-width="1" fill="none" opacity="0.5">
+    <path d="M10 10 L10 22 M10 10 L22 10" />
+    <path d="M310 10 L310 22 M310 10 L298 10" />
+  </g>
+
+  <text x="18" y="24" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="8.5" letter-spacing="0.5" fill="#e0f2fe" opacity="0.85">PHONE-AS-SENSOR FLIGHT PIPELINE</text>
+
+  <!-- PHONE -->
+  <rect x="14" y="46" width="56" height="44" rx="4" fill="none" stroke="#bae6fd" stroke-width="1.3" />
+  <text x="42" y="72" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="9" fill="#e0f2fe">PHONE</text>
+
+  <path d="M70 68 L82 68" stroke="#7dd3fc" stroke-width="1.2" marker-end="url(#arrow-pd)" />
+
+  <!-- ROS2 -->
+  <rect x="86" y="46" width="56" height="44" rx="4" fill="none" stroke="#bae6fd" stroke-width="1.3" />
+  <text x="114" y="66" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="9" fill="#e0f2fe">ROS 2</text>
+  <text x="114" y="78" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="6.5" fill="#94c9e0">IMU+CAM</text>
+
+  <path d="M142 68 L154 68" stroke="#7dd3fc" stroke-width="1.2" marker-end="url(#arrow-pd)" />
+
+  <!-- OpenVINS -->
+  <rect x="158" y="46" width="70" height="44" rx="4" fill="none" stroke="#bae6fd" stroke-width="1.3" />
+  <text x="193" y="66" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="8.5" fill="#e0f2fe">OPENVINS</text>
+  <text x="193" y="78" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="6.5" fill="#94c9e0">VIO</text>
+
+  <path d="M228 68 L240 68" stroke="#7dd3fc" stroke-width="1.2" marker-end="url(#arrow-pd)" />
+
+  <!-- PX4 -->
+  <rect x="244" y="46" width="62" height="44" rx="4" fill="none" stroke="#bae6fd" stroke-width="1.3" />
+  <text x="275" y="72" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="9" fill="#e0f2fe">PX4</text>
+
+  <!-- gesture branch, kept short so it stays above the bottom scrim -->
+  <path d="M114 90 L114 108" stroke="#38f0c8" stroke-width="1.1" stroke-dasharray="2 2" />
+  <path d="M114 108 L275 108 L275 92" fill="none" stroke="#38f0c8" stroke-width="1.1" stroke-dasharray="2 2" marker-end="url(#arrow-pd)" />
+  <text x="114" y="122" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="7" fill="#c8fff0">MEDIAPIPE GESTURE</text>
+</svg>

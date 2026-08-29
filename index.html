@@ -115,7 +115,11 @@
         <p class="section__eyebrow">About</p>
         <h2 class="section__title">Perception and learned control that work outside the lab</h2>
         <div class="about__grid">
-          <div class="about__text" id="aboutText"></div>
+          <div class="about__text" id="aboutText">
+            <p>I'm a robotics engineer working across two connected areas: perception that holds up on imperfect sensors, and learned policies that keep working once they leave simulation.</p>
+            <p>I hold a B.Eng. in Robotics from THWS Schweinfurt, where my thesis built a real-time, radar-only indoor mapping system for a UAV, with no GPS, no camera, and no clean lab conditions to lean on. I'm now completing an M.Eng. in Elektro- und Informationstechnik at the same university, extending that work into radar-camera sensor fusion for my Master's thesis.</p>
+            <p>Alongside that, I build human-in-the-loop reinforcement learning systems and vision-guided manipulation pipelines, where the hard part usually isn't training a policy, it's getting it to behave safely on real hardware. I previously worked as a working student at TTZ-EMO, building multithreaded FEM simulation tooling.</p>
+          </div>
           <div class="about__stats" id="aboutStats"></div>
         </div>
       </div>
@@ -171,9 +175,10 @@
         </p>
         <div class="contact__actions">
           <a href="#" id="emailLink" class="btn btn--primary">Send an email</a>
-          <a href="#" id="githubLink" class="btn btn--ghost" target="_blank" rel="noopener">GitHub</a>
-          <a href="#" id="linkedinLink" class="btn btn--ghost" target="_blank" rel="noopener" hidden>LinkedIn</a>
+          <a href="#" id="githubLink" class="btn btn--ghost" target="_blank" rel="noopener me">GitHub</a>
+          <a href="#" id="linkedinLink" class="btn btn--ghost" target="_blank" rel="noopener me" hidden>LinkedIn</a>
         </div>
+        <p class="contact__email-text" id="contactEmailText"></p>
       </div>
     </section>
   </main>

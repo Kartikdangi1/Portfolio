@@ -47,10 +47,13 @@
       .join("");
 
     const emailLink = document.getElementById("emailLink");
+    const contactEmailText = document.getElementById("contactEmailText");
     if (SITE.email) {
       emailLink.href = `mailto:${SITE.email}`;
+      contactEmailText.textContent = SITE.email;
     } else {
       emailLink.hidden = true;
+      contactEmailText.hidden = true;
     }
 
     const githubLink = document.getElementById("githubLink");
@@ -167,7 +170,7 @@
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen loading="lazy"></iframe>`;
     } else if (item.type === "video") {
-      modalMedia.innerHTML = `<video controls autoplay
+      modalMedia.innerHTML = `<video controls autoplay muted playsinline
         ${item.poster ? `poster="${escapeHtml(item.poster)}"` : ""}>
         <source src="${escapeHtml(item.src)}">
         Your browser doesn't support embedded video.

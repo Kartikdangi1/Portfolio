@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200">
+  <defs>
+    <pattern id="grid-hand" width="16" height="16" patternUnits="userSpaceOnUse">
+      <path d="M16 0 L0 0 0 16" fill="none" stroke="#a78bfa" stroke-width="0.4" opacity="0.18" />
+    </pattern>
+  </defs>
+  <rect width="320" height="200" fill="#12141b" />
+  <rect width="320" height="200" fill="url(#grid-hand)" />
+
+  <!-- targeting-reticle corners, matching the site's HUD language -->
+  <g stroke="#a78bfa" stroke-width="1" fill="none" opacity="0.55">
+    <path d="M10 10 L10 22 M10 10 L22 10" />
+    <path d="M310 10 L310 22 M310 10 L298 10" />
+    <path d="M10 190 L10 178 M10 190 L22 190" />
+    <path d="M310 190 L310 178 M310 190 L298 190" />
+  </g>
+
+  <!-- MediaPipe-style 21-point hand skeleton -->
+  <g fill="none" stroke="#c4b5fd" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" opacity="0.9">
+    <!-- thumb -->
+    <path d="M160 165 L140 150 L122 132 L108 116 L96 102" />
+    <!-- index -->
+    <path d="M160 165 L148 120 L146 90 L145 68 L144 50" />
+    <!-- middle -->
+    <path d="M148 120 L168 112 L170 78 L171 54 L172 34" />
+    <!-- ring -->
+    <path d="M168 112 L188 116 L192 84 L194 62 L196 44" />
+    <!-- pinky -->
+    <path d="M188 116 L206 124 L212 98 L216 80 L219 64" />
+    <!-- palm base -->
+    <path d="M160 165 L206 124" />
+  </g>
+
+  <g fill="#a78bfa">
+    <circle cx="160" cy="165" r="3" />
+    <circle cx="140" cy="150" r="2.1" /><circle cx="122" cy="132" r="2.1" /><circle cx="108" cy="116" r="2.1" /><circle cx="96" cy="102" r="2.4" />
+    <circle cx="148" cy="120" r="2.1" /><circle cx="146" cy="90" r="2.1" /><circle cx="145" cy="68" r="2.1" /><circle cx="144" cy="50" r="2.4" />
+    <circle cx="168" cy="112" r="2.1" /><circle cx="170" cy="78" r="2.1" /><circle cx="171" cy="54" r="2.1" /><circle cx="172" cy="34" r="2.4" />
+    <circle cx="188" cy="116" r="2.1" /><circle cx="192" cy="84" r="2.1" /><circle cx="194" cy="62" r="2.1" /><circle cx="196" cy="44" r="2.4" />
+    <circle cx="206" cy="124" r="2.1" /><circle cx="212" cy="98" r="2.1" /><circle cx="216" cy="80" r="2.1" /><circle cx="219" cy="64" r="2.4" />
+  </g>
+
+  <!-- flexion-angle callout at the index PIP joint -->
+  <g stroke="#38f0c8" stroke-width="0.9" fill="none" opacity="0.85">
+    <path d="M148 120 L148 106" stroke-dasharray="2 2" />
+    <path d="M143 112 A 8 8 0 0 1 151 111" />
+  </g>
+  <circle cx="148" cy="120" r="3.4" fill="none" stroke="#38f0c8" stroke-width="1.1" />
+
+  <text x="18" y="22" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="8.5" letter-spacing="0.5" fill="#e4e1fb" opacity="0.85">LANDMARKS → JOINT ANGLES → DEXHAND</text>
+</svg>

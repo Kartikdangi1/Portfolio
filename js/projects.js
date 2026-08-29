@@ -123,14 +123,16 @@ const PROJECTS = [
       "I built a full reimplementation of HIL-SERL (human-in-the-loop, sample-efficient robot RL), with hand-written SAC in JAX/Flax, RLPD's dual-buffer replay, and HG-DAgger intervention routing. It runs against a simulated Franka Panda in MuJoCo instead of a real robot fleet, and it grew into a small research platform along the way: YAML-declared manipulation tasks, a one-command pipeline from demos to training to evaluation with a built-in web dashboard, and 20+ swappable RL methods (Q-chunking, flow-matching policies, domain randomization, and more), all benchmarked head-to-head on the same tasks and backed by 112+ tests.",
     tags: ["Reinforcement Learning", "JAX/Flax", "MuJoCo", "Human-in-the-Loop"],
     accent: ["#ff5d3d", "#c2410c"],
-    thumbnail: "",
+    thumbnail: "assets/images/projects/hil-serl-pipeline.svg",
     featured: true,
     links: {
       github: "https://github.com/Kartikdangi1/hil_serl_lite",
       demo: "",
       writeup: ""
     },
-    media: [],
+    media: [
+      { title: "Actor-critic loop", type: "image", src: "assets/images/projects/hil-serl-pipeline.svg" }
+    ],
     pipeline: [
       "Hand-written SAC actor-critic in JAX/Flax as the base RL algorithm",
       "RLPD's dual-buffer replay mixes offline demonstrations with online experience",
@@ -146,14 +148,16 @@ const PROJECTS = [
       "For my Master's thesis I'm building a radar-camera fusion and multi-object tracking stack for a UAV: a Continental ARS548 4D radar and an Intel RealSense D435i feed a Hungarian-matching fusion node, and a ByteTrack-based multi-object tracker uses the radar's Doppler velocity directly in its Kalman update. It runs on an Avular Vertex One drone (Jetson Orin NX) with hardware time-sync (gPTP) between sensors, and it's still very much in progress.",
     tags: ["Sensor Fusion", "Computer Vision", "Multi-Object Tracking", "UAV", "In Progress"],
     accent: ["#f97316", "#7c2d12"],
-    thumbnail: "",
+    thumbnail: "assets/images/projects/drone-radar-fusion-overlay.png",
     featured: true,
     links: {
       github: "https://github.com/Kartikdangi1/drone-radar-camera-fusion",
       demo: "",
       writeup: ""
     },
-    media: []
+    media: [
+      { title: "Radar-camera overlay (corridor test)", type: "image", src: "assets/images/projects/drone-radar-fusion-overlay.png" }
+    ]
   },
   {
     id: "vision-guided-socket-insertion",
@@ -211,14 +215,16 @@ const PROJECTS = [
       "A pipeline that turns an ordinary Android phone into a drone's sensor and controller: the phone's IMU and camera stream over WiFi into ROS 2, OpenVINS turns that into visual-inertial odometry fed to PX4 as external vision, and MediaPipe hand-gesture recognition on the same video feed drives arm/takeoff/land and directional flight commands over MAVROS.",
     tags: ["PX4", "MAVROS", "OpenVINS", "MediaPipe", "ROS2"],
     accent: ["#38bdf8", "#0369a1"],
-    thumbnail: "",
+    thumbnail: "assets/images/projects/phone-drone-pipeline.svg",
     featured: false,
     links: {
       github: "https://github.com/Kartikdangi1/phone-drone",
       demo: "",
       writeup: ""
     },
-    media: []
+    media: [
+      { title: "Sensor & control pipeline", type: "image", src: "assets/images/projects/phone-drone-pipeline.svg" }
+    ]
   },
   {
     id: "hand-tracking-simulation",
@@ -228,7 +234,7 @@ const PROJECTS = [
       "A ROS 2 node that drives a DexHand robotic hand model from MediaPipe hand tracking on a live camera feed. It derives finger flexion and abduction angles directly from landmark geometry instead of relying on noisy quaternion orientation, and uses tuned One-Euro filtering plus hold-last-pose logic to keep the joint-state stream smooth through brief tracking loss.",
     tags: ["ROS2", "MediaPipe", "Computer Vision", "Robotics"],
     accent: ["#a78bfa", "#5b21b6"],
-    thumbnail: "https://github.com/user-attachments/assets/1799c15a-936a-4b31-93a5-759c074c7313",
+    thumbnail: "assets/images/projects/hand-tracking-landmarks.svg",
     featured: false,
     links: {
       github: "https://github.com/Kartikdangi1/hand_tracking_simulation",
@@ -236,7 +242,7 @@ const PROJECTS = [
       writeup: ""
     },
     media: [
-      { title: "RViz demo", type: "image", src: "https://github.com/user-attachments/assets/1799c15a-936a-4b31-93a5-759c074c7313" }
+      { title: "Hand landmark tracking", type: "image", src: "assets/images/projects/hand-tracking-landmarks.svg" }
     ]
   }
 ];

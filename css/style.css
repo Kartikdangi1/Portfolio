@@ -532,6 +532,13 @@ h1, h2, h3, p { margin: 0; }
   justify-content: center;
   flex-wrap: wrap;
 }
+.contact__email-text {
+  margin-top: 1.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  user-select: all;
+}
 
 /* ============================================================
    Footer
