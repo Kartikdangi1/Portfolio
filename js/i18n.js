@@ -10,7 +10,7 @@
 const I18N = {
   en: {
     nav: { about: "About", projects: "Projects", skills: "Skills", contact: "Contact", cta: "Let's talk" },
-    hero: { eyebrow: "Hi, I'm", viewProjects: "View Projects", getInTouch: "Get in touch" },
+    hero: { eyebrow: "Hi, I'm", viewProjects: "View Projects", getInTouch: "Get in touch", resume: "Resume" },
     about: { eyebrow: "About", title: "Perception and learned control that work outside the lab" },
     projects: {
       eyebrow: "Projects",
@@ -37,7 +37,7 @@ const I18N = {
   },
   de: {
     nav: { about: "Über mich", projects: "Projekte", skills: "Skills", contact: "Kontakt", cta: "Kontakt aufnehmen" },
-    hero: { eyebrow: "Hallo, ich bin", viewProjects: "Projekte ansehen", getInTouch: "Kontakt aufnehmen" },
+    hero: { eyebrow: "Hallo, ich bin", viewProjects: "Projekte ansehen", getInTouch: "Kontakt aufnehmen", resume: "Lebenslauf" },
     about: { eyebrow: "Über mich", title: "Wahrnehmung und gelernte Regelung, die auch außerhalb des Labors funktionieren" },
     projects: {
       eyebrow: "Projekte",

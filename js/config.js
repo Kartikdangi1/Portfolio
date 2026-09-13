@@ -56,7 +56,9 @@ const SITE = {
   },
   location: "",
   email: "kartikdangide@gmail.com",
-  resumeUrl: "",
+  // Drop your resume PDF at assets/resume.pdf and it'll appear automatically
+  // (hidden until the file exists at this path).
+  resumeUrl: "assets/resume.pdf",
 
   // Array of paragraphs, rendered as separate <p> tags.
   about: [

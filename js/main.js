@@ -75,6 +75,24 @@
     }
   }
 
+  // Only shows the Resume buttons once the PDF actually exists at
+  // SITE.resumeUrl -- so dropping the file into assets/ later is all it
+  // takes for them to appear, no code change needed, and there's never a
+  // dead link in the meantime.
+  function setupResumeLink() {
+    const links = document.querySelectorAll(".js-resume-link");
+    if (!SITE.resumeUrl || !links.length) return;
+    fetch(SITE.resumeUrl, { method: "HEAD" })
+      .then((res) => {
+        if (!res.ok) return;
+        links.forEach((el) => {
+          el.href = SITE.resumeUrl;
+          el.hidden = false;
+        });
+      })
+      .catch(() => {});
+  }
+
   /* ---------------- Projects grid ---------------- */
   function cardMediaHtml(project) {
     const [from, to] = project.accent || ["#ff8a3d", "#ff5d3d"];
@@ -505,6 +523,7 @@
     setupThemeToggle();
     setupLangToggle();
     setupDroneCompanion();
+    setupResumeLink();
     // Renders site info + projects, restarts the typewriter, re-arms scroll
     // reveal, and applies the current language to the static chrome -- all
     // in one pass, whether this is the first load or a stored preference.
