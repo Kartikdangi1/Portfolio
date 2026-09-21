@@ -1,6 +1,6 @@
 # A Dependency-Free Bilingual Portfolio Site
 
-A portfolio site built to showcase engineering work invites a particular kind of scrutiny: a visitor who understands the underlying projects will also notice if the site presenting them is built carelessly. This repository is a bilingual, English and German, portfolio site built entirely from vanilla HTML, CSS and JavaScript, with no build step and no external framework, deployed to GitHub Pages through a continuous-integration workflow and indexed by search engines through a submitted sitemap, a `robots.txt` file and a verified ownership record, evidence that this is a live, discoverable site rather than a local demonstration never actually deployed.
+A portfolio site built to present engineering work invites a particular kind of scrutiny: a visitor who understands the underlying projects will also notice if the site presenting them is built carelessly. This repository is a bilingual, English and German, portfolio site built entirely from vanilla HTML, CSS and JavaScript, with no build step and no external framework, deployed to GitHub Pages through a continuous-integration workflow and indexed by search engines through a submitted sitemap, a `robots.txt` file and a verified ownership record, evidence that this is a live, discoverable site rather than a local demonstration never actually deployed.
 
 ## Implementation
 
