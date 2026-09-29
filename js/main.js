@@ -94,19 +94,59 @@
   }
 
   /* ---------------- Projects grid ---------------- */
+  // A card whose project has a video plays it right on the card (muted, looped,
+  // inline). `preview` can point at a lighter clip than the full modal video.
+  function previewSrc(project) {
+    if (project.preview) return project.preview;
+    const v = (project.media || []).find((m) => m.type === "video");
+    return v ? v.src : "";
+  }
+
   function cardMediaHtml(project) {
-    const [from, to] = project.accent || ["#ff8a3d", "#ff5d3d"];
+    const [from, to] = project.accent || ["#2f8a94", "#124d54"];
     const bg = project.thumbnail
       ? `background-image:url('${escapeHtml(project.thumbnail)}')`
       : `background-image:linear-gradient(135deg, ${from}, ${to})`;
+    const src = previewSrc(project);
+    const video = src
+      ? `<video class="project-card__video" data-src="${escapeHtml(src)}" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>`
+      : "";
 
     return `
-      <div class="project-card__media" style="${bg}">
+      <div class="project-card__media ${src ? "project-card__media--video" : ""}" style="${bg}">
+        ${video}
         <span class="project-card__badge">${escapeHtml(project.tags[0] || "Project")}</span>
         <div class="project-card__play">
           <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
         </div>
       </div>`;
+  }
+
+  // Loads + plays each card video only while it's on screen (saves bandwidth
+  // and CPU); reduced-motion visitors just keep the still thumbnail.
+  let cardVideoObserver = null;
+  function setupCardVideos(grid) {
+    if (cardVideoObserver) cardVideoObserver.disconnect();
+    const videos = grid.querySelectorAll(".project-card__video");
+    if (!videos.length || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      videos.forEach((v) => v.remove());
+      return;
+    }
+    cardVideoObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const v = entry.target;
+          if (entry.isIntersecting) {
+            if (!v.src) v.src = v.dataset.src;
+            v.play().catch(() => {});
+          } else {
+            v.pause();
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    videos.forEach((v) => cardVideoObserver.observe(v));
   }
 
   function projectCardHtml(p) {
@@ -150,6 +190,8 @@
       })
       .join("");
 
+    setupCardVideos(grid);
+
     grid.querySelectorAll(".project-card").forEach((card) => {
       const open = () => openModal(card.dataset.id);
       card.addEventListener("click", open);
@@ -174,6 +216,12 @@
 
   let lastFocused = null;
 
+  const modalStage = document.getElementById("modalStage");
+  const modalCaption = document.getElementById("modalCaption");
+  const modalCounter = document.getElementById("modalCounter");
+  let currentProject = null;
+  let currentIndex = 0;
+
   function renderMediaItem(project, index) {
     const item = project.media[index];
     if (!item) {
@@ -195,7 +243,7 @@
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen loading="lazy"></iframe>`;
     } else if (item.type === "video") {
-      modalMedia.innerHTML = `<video controls autoplay muted playsinline
+      modalMedia.innerHTML = `<video controls autoplay muted loop playsinline
         ${item.poster ? `poster="${escapeHtml(item.poster)}"` : ""}>
         <source src="${escapeHtml(item.src)}">
         Your browser doesn't support embedded video.
@@ -209,8 +257,38 @@
         });
       }
     } else if (item.type === "image") {
-      modalMedia.innerHTML = `<img src="${escapeHtml(item.src)}" alt="${escapeHtml(itemTitle)}" loading="lazy" />`;
+      modalMedia.innerHTML = `<img src="${escapeHtml(item.src)}" alt="${escapeHtml(itemTitle)}" />`;
     }
+  }
+
+  // Shows slide `index` (wrapping around) and syncs caption, counter and the
+  // active thumbnail.
+  function showSlide(index) {
+    const n = currentProject.media.length;
+    if (!n) return renderMediaItem(currentProject, 0);
+    currentIndex = ((index % n) + n) % n;
+    renderMediaItem(currentProject, currentIndex);
+    const item = currentProject.media[currentIndex];
+    modalCaption.textContent = pick(item.title, currentLang) || "";
+    modalCounter.textContent = `${currentIndex + 1} / ${n}`;
+    modalThumbs.querySelectorAll(".modal__thumb").forEach((b, i) => {
+      const active = i === currentIndex;
+      b.classList.toggle("active", active);
+      if (active) b.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+    });
+  }
+
+  function thumbHtml(item, i) {
+    const label = escapeHtml(pick(item.title, currentLang) || `Media ${i + 1}`);
+    const inner =
+      item.type === "image"
+        ? `<img src="${escapeHtml(item.src)}" alt="" loading="lazy" />`
+        : item.poster
+          ? `<img src="${escapeHtml(item.poster)}" alt="" loading="lazy" />`
+          : item.type === "video"
+            ? `<video src="${escapeHtml(item.src)}#t=0.5" preload="metadata" muted></video>`
+            : "";
+    return `<button class="modal__thumb ${item.type === "image" ? "" : "modal__thumb--video"}" data-index="${i}" title="${label}" aria-label="${label}">${inner}</button>`;
   }
 
   function openModal(id) {
@@ -218,6 +296,7 @@
     if (!project) return;
 
     lastFocused = document.activeElement;
+    currentProject = project;
 
     modalTitle.textContent = pick(project.title, currentLang);
     modalDescription.textContent = pick(project.description, currentLang);
@@ -228,22 +307,15 @@
         ? `<h4>${escapeHtml(t("modal.howItWorks", currentLang))}</h4><ol>${project.pipeline.map((step) => `<li>${escapeHtml(pick(step, currentLang))}</li>`).join("")}</ol>`
         : "";
 
-    renderMediaItem(project, 0);
-
-    modalThumbs.innerHTML = project.media
-      .map(
-        (item, i) =>
-          `<button class="modal__thumb ${i === 0 ? "active" : ""}" data-index="${i}">${escapeHtml(pick(item.title, currentLang) || `Media ${i + 1}`)}</button>`
-      )
-      .join("");
-
+    const multi = project.media.length > 1;
+    modalStage.classList.toggle("modal__stage--single", !multi);
+    modalThumbs.innerHTML = multi ? project.media.map(thumbHtml).join("") : "";
+    modalThumbs.scrollLeft = 0;
     modalThumbs.querySelectorAll(".modal__thumb").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        modalThumbs.querySelectorAll(".modal__thumb").forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        renderMediaItem(project, Number(btn.dataset.index));
-      });
+      btn.addEventListener("click", () => showSlide(Number(btn.dataset.index)));
     });
+    modal.querySelector(".modal__dialog").scrollTop = 0;
+    showSlide(0);
 
     const links = [
       project.links?.github && { label: t("modal.viewCode", currentLang), href: project.links.github },
@@ -269,10 +341,31 @@
     if (lastFocused) lastFocused.focus();
   }
 
+  document.getElementById("modalPrev").addEventListener("click", () => showSlide(currentIndex - 1));
+  document.getElementById("modalNext").addEventListener("click", () => showSlide(currentIndex + 1));
+
+  // Swipe left/right on touch screens (ignore taps and vertical scrolls).
+  let swipeStartX = null;
+  let swipeStartY = null;
+  modalStage.addEventListener("touchstart", (e) => {
+    swipeStartX = e.touches[0].clientX;
+    swipeStartY = e.touches[0].clientY;
+  }, { passive: true });
+  modalStage.addEventListener("touchend", (e) => {
+    if (swipeStartX === null) return;
+    const dx = e.changedTouches[0].clientX - swipeStartX;
+    const dy = e.changedTouches[0].clientY - swipeStartY;
+    swipeStartX = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) showSlide(currentIndex + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+
   document.getElementById("modalClose").addEventListener("click", closeModal);
   document.getElementById("modalBackdrop").addEventListener("click", closeModal);
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
+    if (!modal.classList.contains("open")) return;
+    if (e.key === "Escape") closeModal();
+    else if (e.key === "ArrowLeft") showSlide(currentIndex - 1);
+    else if (e.key === "ArrowRight") showSlide(currentIndex + 1);
   });
 
   /* ---------------- Nav scroll + mobile menu ---------------- */

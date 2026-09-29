@@ -45,6 +45,9 @@
  *   accent      string   CSS gradient (from, to) used for the card artwork
  *                        when no thumbnail image is set — pick any two hex
  *                        colors, or reuse one of the presets below
+ *   preview     string?  optional path to a short/light video that autoplays
+ *                        (muted, looped) on the project card. Defaults to the
+ *                        first `type: "video"` item in `media`.
  *   thumbnail   string?  optional path to a real screenshot/image, e.g.
  *                        "assets/images/projects/my-shot.jpg". If omitted,
  *                        the `accent` gradient + first tag is shown instead.
@@ -70,7 +73,7 @@ const PROJECTS = [
       de: "Meine Bachelorarbeit an der THWS Schweinfurt: ein ROS-2-System, das ein automotives 4D-Radar (Continental ARS548) in ein echtzeitfähiges Indoor-Belegungskartierungswerkzeug für eine Drohne verwandelt, das auch in GPS-freien Räumen sowie durch Rauch, Staub oder Dunkelheit funktioniert. Fusionierte Odometrie (Madgwick-IMU, RANSAC-Doppler-Eigengeschwindigkeit und LiDAR-Höhe) speist eine GICP-SLAM-Pipeline mit Loop-Closure, während ein separater Radarpfad ein zeitliches Bayes'sches Belegungsgitter mit Verdeckungsfilterung aufbaut. Die gesamte Pipeline läuft End-to-End in rund 150 ms auf einem NVIDIA Jetson Orin NX."
     },
     tags: ["ROS2", "SLAM", "Sensor Fusion", "4D Radar", "UAV", "Jetson"],
-    accent: ["#ff8a3d", "#ff5d3d"],
+    accent: ["#2f8a94", "#124d54"],
     thumbnail: "assets/images/projects/radar-mapping-room-map.png",
     featured: true,
     links: {
@@ -106,6 +109,7 @@ const PROJECTS = [
     tags: ["ROS2", "Distance Fields", "Reactive Planning", "Collision Avoidance", "Cobot", "MediaPipe"],
     accent: ["#22d3ee", "#c026d3"],
     thumbnail: "assets/images/projects/idmp-distance-field.png",
+    preview: "assets/videos/previews/idmp.mp4",
     featured: true,
     links: {
       github: "",
@@ -133,26 +137,75 @@ const PROJECTS = [
       de: "Eine Human-in-the-Loop-RL-Forschungsplattform, von Grund auf neu gebaut, um auf einem Laptop zu laufen"
     },
     description: {
-      en: "I built a full reimplementation of HIL-SERL (human-in-the-loop, sample-efficient robot RL), with hand-written SAC in JAX/Flax, RLPD's dual-buffer replay, and HG-DAgger intervention routing. It runs against a simulated Franka Panda in MuJoCo instead of a real robot fleet, and it grew into a small research platform along the way: YAML-declared manipulation tasks, a one-command pipeline from demos to training to evaluation with a built-in web dashboard, and 20+ swappable RL methods (Q-chunking, flow-matching policies, domain randomization, and more), all benchmarked head-to-head on the same tasks and backed by 112+ tests.",
-      de: "Ich habe eine vollständige Neuimplementierung von HIL-SERL (Human-in-the-Loop, sample-effizientes Roboter-RL) gebaut, mit handgeschriebenem SAC in JAX/Flax, RLPD-Dual-Buffer-Replay und HG-DAgger-Interventions-Routing. Sie läuft gegen einen simulierten Franka Panda in MuJoCo statt gegen eine echte Roboterflotte und ist dabei zu einer kleinen Forschungsplattform herangewachsen: YAML-deklarierte Manipulationsaufgaben, eine Ein-Befehl-Pipeline von Demonstrationen über Training bis Evaluation mit einem eingebauten Web-Dashboard sowie über 20 austauschbare RL-Methoden (Q-Chunking, Flow-Matching-Policies, Domain Randomization und mehr), die alle auf denselben Aufgaben direkt gegeneinander verglichen und durch über 112 Tests abgesichert werden."
+      en: "A from-scratch reimplementation of HIL-SERL (human-in-the-loop, sample-efficient robot RL) with hand-written SAC in JAX/Flax, RLPD's dual-buffer replay, and HG-DAgger intervention routing, running in MuJoCo instead of on a real robot fleet. It grew into a research platform with 20+ switchable RL extensions and was the subject of my semester report, \"Cross-Embodiment Generalization and Efficient Inference Techniques for HIL Robot RL\". Six structurally different arms (Panda, UR5e, UR10e, xArm7, FR3, Sawyer) share one data-driven registry, and a reachability probe caught a Sawyer configuration that reached its target but failed every grasp. Consistency distillation cut flow-matching policy latency 7.74x, a two-stage task that collapsed from 70% to 0% success was diagnosed and fixed by training stages separately (100% restored), and the same policy class reached 86.7% deterministic success on a LIBERO benchmark task, from scratch.",
+      de: "Eine vollständige Neuimplementierung von HIL-SERL (Human-in-the-Loop, sample-effizientes Roboter-RL) mit handgeschriebenem SAC in JAX/Flax, RLPD-Dual-Buffer-Replay und HG-DAgger-Interventions-Routing, die in MuJoCo statt auf einer echten Roboterflotte läuft. Daraus wurde eine Forschungsplattform mit über 20 schaltbaren RL-Erweiterungen, die Gegenstand meines Semesterberichts \"Cross-Embodiment Generalization and Efficient Inference Techniques for HIL Robot RL\" war. Sechs strukturell verschiedene Arme (Panda, UR5e, UR10e, xArm7, FR3, Sawyer) teilen sich eine datengetriebene Registry, und ein Reichweiten-Test deckte eine Sawyer-Konfiguration auf, die ihr Ziel erreichte, aber jeden Greifversuch verfehlte. Consistency-Distillation senkte die Latenz der Flow-Matching-Policy um das 7,74-Fache, ein zweistufiger Task, dessen Erfolgsrate von 70 % auf 0 % einbrach, wurde diagnostiziert und durch getrenntes Training der Stufen behoben (100 % wiederhergestellt), und dieselbe Policy-Klasse erreichte auf einer LIBERO-Benchmark-Aufgabe von Grund auf 86,7 % deterministischen Erfolg."
     },
-    tags: ["Reinforcement Learning", "JAX/Flax", "MuJoCo", "Human-in-the-Loop"],
-    accent: ["#ff5d3d", "#c2410c"],
-    thumbnail: "assets/images/projects/hil-serl-pipeline.svg",
+    tags: ["Reinforcement Learning", "JAX/Flax", "MuJoCo", "Human-in-the-Loop", "Cross-Embodiment", "Flow Matching"],
+    accent: ["#124d54", "#094044"],
+    thumbnail: "assets/images/projects/hil-arm-lineup.png",
+    preview: "assets/videos/hil-panda-pick-place-stack.mp4",
     featured: true,
     links: {
       github: "https://github.com/Kartikdangi1/hil_serl_lite",
       demo: "",
-      writeup: ""
+      writeup: "assets/docs/hil-serl-lite-semester1-report.pdf"
     },
     media: [
+      { title: { en: "Panda: pick and place (scripted expert)", de: "Panda: Pick and Place (skriptierter Experte)" }, type: "video", src: "assets/videos/hil-panda-pick-place.mp4" },
+      { title: { en: "Panda: three-stage pick, place, stack", de: "Panda: dreistufiges Greifen, Ablegen, Stapeln" }, type: "video", src: "assets/videos/hil-panda-pick-place-stack.mp4" },
+      { title: { en: "Sawyer: pick and place", de: "Sawyer: Pick and Place" }, type: "video", src: "assets/videos/hil-sawyer-pick-place.mp4" },
+      { title: { en: "FR3: pick and place", de: "FR3: Pick and Place" }, type: "video", src: "assets/videos/hil-fr3-pick-place.mp4" },
+      { title: { en: "UR5e: lift cube", de: "UR5e: Würfel anheben" }, type: "video", src: "assets/videos/hil-ur5e-lift-cube.mp4" },
+      { title: { en: "UR10e: lift cube", de: "UR10e: Würfel anheben" }, type: "video", src: "assets/videos/hil-ur10e-lift-cube.mp4" },
+      { title: { en: "xArm7: lift cube", de: "xArm7: Würfel anheben" }, type: "video", src: "assets/videos/hil-xarm7-lift-cube.mp4" },
+      { title: { en: "LIBERO-10 benchmark task: bowl into drawer", de: "LIBERO-10-Benchmark-Aufgabe: Schüssel in die Schublade" }, type: "video", src: "assets/videos/hil-libero-bowl-in-drawer.mp4" },
+      { title: { en: "Six arms, one registry", de: "Sechs Arme, eine Registry" }, type: "image", src: "assets/images/projects/hil-arm-lineup.png" },
+      { title: { en: "Task stages, from reset to success", de: "Aufgabenstufen, vom Reset bis zum Erfolg" }, type: "image", src: "assets/images/projects/hil-task-sequence.png" },
+      { title: { en: "Sawyer grasp fix, before and after", de: "Sawyer-Greifkorrektur, vorher und nachher" }, type: "image", src: "assets/images/projects/hil-sawyer-fix.png" },
+      { title: { en: "Stage success collapse and the skill-chaining fix", de: "Einbruch der Stufenerfolgsrate und die Skill-Chaining-Korrektur" }, type: "image", src: "assets/images/projects/hil-chaining-regression.png" },
+      { title: { en: "Consistency distillation: 7.74x lower latency", de: "Consistency-Distillation: 7,74-fach geringere Latenz" }, type: "image", src: "assets/images/projects/hil-distillation-latency.png" },
+      { title: { en: "LIBERO transfer: flow-matching, chunked actions", de: "LIBERO-Transfer: Flow-Matching mit Aktions-Chunks" }, type: "image", src: "assets/images/projects/hil-libero-flow-chunk.png" },
       { title: { en: "Actor-critic loop", de: "Actor-Critic-Regelkreis" }, type: "image", src: "assets/images/projects/hil-serl-pipeline.svg" }
     ],
     pipeline: [
       { en: "Hand-written SAC actor-critic in JAX/Flax as the base RL algorithm", de: "Handgeschriebener SAC-Actor-Critic in JAX/Flax als RL-Basisalgorithmus" },
       { en: "RLPD's dual-buffer replay mixes offline demonstrations with online experience", de: "RLPD-Dual-Buffer-Replay mischt Offline-Demonstrationen mit Online-Erfahrung" },
       { en: "HG-DAgger intervention routing lets a human take over mid-episode and folds the correction back into training", de: "HG-DAgger-Interventions-Routing lässt einen Menschen mitten in der Episode eingreifen und die Korrektur zurück ins Training einfließen" },
-      { en: "20+ swappable extensions (Q-chunking, flow-matching policies, domain randomization) benchmarked head-to-head on the same MuJoCo tasks", de: "Über 20 austauschbare Erweiterungen (Q-Chunking, Flow-Matching-Policies, Domain Randomization), direkt gegeneinander auf denselben MuJoCo-Aufgaben verglichen" }
+      { en: "Six arms registered as data, each validated by a scripted reachability probe against the real simulated dynamics instead of a datasheet", de: "Sechs Arme als Daten registriert, jeweils durch einen skriptbasierten Reichweiten-Test gegen die simulierte Dynamik validiert statt anhand eines Datenblatts" },
+      { en: "Consistency distillation collapses a 128-forward-pass policy evaluation into one pass (7.74x lower latency)", de: "Consistency-Distillation reduziert eine Policy-Auswertung mit 128 Vorwärtsdurchläufen auf einen (7,74-fach geringere Latenz)" },
+      { en: "Per-stage skill chaining fixes a multi-stage training collapse (70% to 0%), restoring 100% success", de: "Stufenweises Skill-Chaining behebt einen Trainingseinbruch bei mehrstufigen Aufgaben (70 % auf 0 %) und stellt 100 % Erfolg wieder her" },
+      { en: "Transfers to LIBERO with a chunked-action flow-matching policy: 86.7% deterministic success from scratch", de: "Transfer auf LIBERO mit einer Flow-Matching-Policy über Aktions-Chunks: 86,7 % deterministischer Erfolg von Grund auf" }
+    ]
+  },
+  {
+    id: "sinew",
+    title: { en: "Sinew: Shared ROS 2 Robotics Library", de: "Sinew: Gemeinsame ROS-2-Robotikbibliothek" },
+    tagline: {
+      en: "The reusable motion-planning, servoing and force-control layer that seven robotics packages build on",
+      de: "Die wiederverwendbare Ebene für Bewegungsplanung, Servoing und Kraftregelung, auf der sieben Robotik-Pakete aufbauen"
+    },
+    description: {
+      en: "Seven packages in one robotics workcell each needed to plan a motion, drive a gripper or run a ROS 2 executor, so I maintain the shared library they all depend on, under one rule: code only lands here once two or more projects need it. It wraps MoveIt's services in a roughly 3,000-line motion-planning module (multi-robot requests, partial joint specs), binds MoveIt 2's own C++ time-optimal trajectory generation and Ruckig jerk-limited smoothing into Python through pybind11, manages MoveIt Servo's lifecycle, and implements admittance and compliance force control with one client interface across Franka, OnRobot and Schunk grippers. I re-ported the trajectory bridges against MoveIt 2's real Humble headers, which surfaced and fixed six genuine API mismatches, and made failures raise explicit errors instead of silently falling back to approximate motion. Sixteen runnable examples and enforced docstring and typing checks keep it legible for its consumers.",
+      de: "Sieben Pakete einer Robotik-Arbeitszelle müssen jeweils Bewegungen planen, Greifer ansteuern oder einen ROS-2-Executor betreiben, daher pflege ich die gemeinsame Bibliothek, von der alle abhängen, nach einer Regel: Code kommt erst hierher, wenn mindestens zwei Projekte ihn brauchen. Sie kapselt MoveIt-Dienste in einem rund 3.000 Zeilen großen Bewegungsplanungsmodul (Multi-Roboter-Anfragen, partielle Gelenkangaben), bindet MoveIt-2-eigene C++-Algorithmen für zeitoptimale Trajektorien und Ruckig-Glättung mit Ruck-Begrenzung per pybind11 an Python an, verwaltet den MoveIt-Servo-Lebenszyklus und implementiert Admittanz- und Nachgiebigkeitsregelung mit einer einheitlichen Client-Schnittstelle für Franka-, OnRobot- und Schunk-Greifer. Ich habe die Trajektorien-Bindings gegen die echten MoveIt-2-Humble-Header neu portiert, was sechs echte API-Abweichungen aufdeckte und behob, und Fehler lösen nun explizite Exceptions aus, statt still auf ungefähre Bewegungen zurückzufallen. Sechzehn lauffähige Beispiele und erzwungene Docstring- und Typprüfungen halten sie für ihre Nutzer verständlich."
+    },
+    tags: ["ROS2", "MoveIt 2", "pybind11", "Motion Planning", "Force Control", "Python/C++"],
+    accent: ["#1d6a73", "#094044"],
+    thumbnail: "assets/images/projects/sinew-consumers.svg",
+    featured: true,
+    links: {
+      github: "",
+      demo: "",
+      writeup: ""
+    },
+    media: [
+      { title: { en: "One library, seven consumers", de: "Eine Bibliothek, sieben Nutzer" }, type: "image", src: "assets/images/projects/sinew-consumers.svg" },
+      { title: { en: "What Sinew provides", de: "Was Sinew bereitstellt" }, type: "image", src: "assets/images/projects/sinew-modules.svg" }
+    ],
+    pipeline: [
+      { en: "Plan joint and Cartesian motions through one MoveIt wrapper, for one robot or several in a single request", de: "Gelenk- und kartesische Bewegungen über einen MoveIt-Wrapper planen, für einen oder mehrere Roboter in einer Anfrage" },
+      { en: "Generate time-optimal trajectories (TOTG) and smooth them under jerk limits (Ruckig) via pybind11 bridges to MoveIt 2's C++ code", de: "Zeitoptimale Trajektorien (TOTG) erzeugen und unter Ruckbegrenzung glätten (Ruckig), über pybind11-Brücken zu MoveIt-2-C++-Code" },
+      { en: "Run MoveIt Servo as a managed subprocess with joint-jog, Cartesian-twist and target-pose modes", de: "MoveIt Servo als verwalteten Subprozess betreiben, mit Gelenk-Jog-, kartesischem Twist- und Zielpose-Modus" },
+      { en: "Apply admittance and compliance control, and swap grippers by swapping a client class", de: "Admittanz- und Nachgiebigkeitsregelung anwenden und Greifer durch Austausch einer Client-Klasse wechseln" }
     ]
   },
   {
@@ -167,7 +220,7 @@ const PROJECTS = [
       de: "Für meine Masterarbeit baue ich einen Radar-Kamera-Fusions- und Multi-Objekt-Tracking-Stack für eine Drohne: Ein 4D-Radar Continental ARS548 und eine Intel-RealSense-D435i-Kamera speisen einen Fusionsknoten mit ungarischem Matching, und ein ByteTrack-basierter Multi-Objekt-Tracker nutzt die Doppler-Geschwindigkeit des Radars direkt in seinem Kalman-Update. Das System läuft auf einer Avular-Vertex-One-Drohne (Jetson Orin NX) mit hardwareseitiger Zeitsynchronisation (gPTP) zwischen den Sensoren und befindet sich noch deutlich in Arbeit."
     },
     tags: ["Sensor Fusion", "Computer Vision", "Multi-Object Tracking", "UAV", "In Progress"],
-    accent: ["#f97316", "#7c2d12"],
+    accent: ["#1d6a73", "#094044"],
     thumbnail: "assets/images/projects/drone-radar-fusion-overlay.png",
     featured: true,
     links: {
@@ -193,6 +246,7 @@ const PROJECTS = [
     tags: ["Computer Vision", "Detectron2", "Robotic Assembly", "HMI"],
     accent: ["#fbbf24", "#d97706"],
     thumbnail: "assets/images/projects/socket-detector-workflow.png",
+    preview: "assets/videos/previews/socket-insertion.mp4",
     featured: true,
     links: {
       github: "",
@@ -227,6 +281,7 @@ const PROJECTS = [
     tags: ["ROS2", "SLAM", "Nav2", "Reinforcement Learning", "Gazebo"],
     accent: ["#94a3b8", "#334155"],
     thumbnail: "assets/images/projects/ros2-explorer-gazebo.png",
+    preview: "assets/videos/previews/ros2-explorer.mp4",
     featured: false,
     links: {
       github: "https://github.com/Kartikdangi1/ros2-autonomous-explorer",
@@ -290,9 +345,9 @@ const PROJECTS = [
 // Reusable accent-color presets — feel free to use these instead of picking
 // your own hex values when adding a project.
 const ACCENT_PRESETS = {
-  orange: ["#ff8a3d", "#ff5d3d"],
-  ember: ["#ff5d3d", "#c2410c"],
-  rust: ["#f97316", "#7c2d12"],
+  teal: ["#2f8a94", "#124d54"],
+  deepTeal: ["#124d54", "#094044"],
+  pine: ["#1d6a73", "#094044"],
   amber: ["#fbbf24", "#d97706"],
   slate: ["#94a3b8", "#334155"],
   sky: ["#38bdf8", "#0369a1"],
