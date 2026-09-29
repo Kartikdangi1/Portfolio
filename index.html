@@ -217,13 +217,19 @@
     <div class="modal__backdrop" id="modalBackdrop"></div>
     <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <button class="modal__close" id="modalClose" aria-label="Close">&times;</button>
-      <div class="modal__media" id="modalMedia"></div>
+      <div class="modal__stage" id="modalStage">
+        <div class="modal__media" id="modalMedia"></div>
+        <button class="modal__nav modal__nav--prev" id="modalPrev" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button class="modal__nav modal__nav--next" id="modalNext" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+        <span class="modal__counter" id="modalCounter"></span>
+      </div>
+      <div class="modal__caption" id="modalCaption"></div>
+      <div class="modal__thumbs" id="modalThumbs"></div>
       <div class="modal__body">
         <h3 id="modalTitle"></h3>
         <p id="modalDescription"></p>
         <div class="modal__tags" id="modalTags"></div>
         <div class="modal__pipeline" id="modalPipeline"></div>
-        <div class="modal__thumbs" id="modalThumbs"></div>
         <div class="modal__links" id="modalLinks"></div>
       </div>
     </div>
@@ -234,7 +240,7 @@
     <span class="drone-companion__bob">
       <svg class="drone-companion__svg" viewBox="0 0 100 80" aria-hidden="true">
         <!-- Tracking-reticle corners, like a targeting/lock-on overlay -->
-        <g class="drone-companion__reticle" stroke="#ff8a3d" stroke-width="1" fill="none" opacity="0.75">
+        <g class="drone-companion__reticle" stroke="#2f8a94" stroke-width="1" fill="none" opacity="0.75">
           <path d="M2 2 L2 10 M2 2 L10 2" />
           <path d="M98 2 L98 10 M98 2 L90 2" />
           <path d="M2 78 L2 70 M2 78 L10 78" />
@@ -253,16 +259,16 @@
         <circle cx="50" cy="60" r="3.4" fill="none" stroke="#8fd7ff" stroke-width="1.2" />
 
         <g class="drone-companion__rotor" style="transform-origin: 18px 17px">
-          <circle cx="18" cy="17" r="9" fill="none" stroke="#ff8a3d" stroke-width="1" stroke-dasharray="1.5 3" opacity="0.75" />
+          <circle cx="18" cy="17" r="9" fill="none" stroke="#2f8a94" stroke-width="1" stroke-dasharray="1.5 3" opacity="0.75" />
         </g>
         <g class="drone-companion__rotor" style="transform-origin: 82px 17px">
-          <circle cx="82" cy="17" r="9" fill="none" stroke="#ff8a3d" stroke-width="1" stroke-dasharray="1.5 3" opacity="0.75" />
+          <circle cx="82" cy="17" r="9" fill="none" stroke="#2f8a94" stroke-width="1" stroke-dasharray="1.5 3" opacity="0.75" />
         </g>
         <g class="drone-companion__rotor" style="transform-origin: 18px 61px">
-          <circle cx="18" cy="61" r="9" fill="none" stroke="#ff8a3d" stroke-width="1" stroke-dasharray="1.5 3" opacity="0.75" />
+          <circle cx="18" cy="61" r="9" fill="none" stroke="#2f8a94" stroke-width="1" stroke-dasharray="1.5 3" opacity="0.75" />
         </g>
         <g class="drone-companion__rotor" style="transform-origin: 82px 61px">
-          <circle cx="82" cy="61" r="9" fill="none" stroke="#ff8a3d" stroke-width="1" stroke-dasharray="1.5 3" opacity="0.75" />
+          <circle cx="82" cy="61" r="9" fill="none" stroke="#2f8a94" stroke-width="1" stroke-dasharray="1.5 3" opacity="0.75" />
         </g>
 
         <circle cx="18" cy="17" r="3.6" fill="none" stroke="#d5d8de" stroke-width="1.3" />
