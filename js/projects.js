@@ -117,7 +117,7 @@ const PROJECTS = [
       writeup: ""
     },
     media: [
-      { title: { en: "Pick-and-place demo", de: "Pick-and-Place-Demo" }, type: "video", src: "assets/videos/idmp-pickandplace-demo.mp4", poster: "assets/images/projects/idmp-distance-field.png", speed: 2 },
+      { title: { en: "Pick-and-place demo", de: "Pick-and-Place-Demo" }, type: "video", src: "assets/videos/idmp-pickandplace-demo.mp4", poster: "assets/images/projects/posters/idmp-pickandplace-demo.jpg" },
       { title: { en: "Distance-and-gradient field", de: "Distanz-und-Gradientenfeld" }, type: "image", src: "assets/images/projects/idmp-distance-field.png" },
       { title: { en: "MAiRA 7M cobot at CERI", de: "MAiRA-7M-Cobot am CERI" }, type: "image", src: "assets/images/projects/idmp-hardware-setup.png" }
     ],
@@ -151,14 +151,14 @@ const PROJECTS = [
       writeup: "assets/docs/hil-serl-lite-semester1-report.pdf"
     },
     media: [
-      { title: { en: "Panda: pick and place (scripted expert)", de: "Panda: Pick and Place (skriptierter Experte)" }, type: "video", src: "assets/videos/hil-panda-pick-place.mp4" },
-      { title: { en: "Panda: three-stage pick, place, stack", de: "Panda: dreistufiges Greifen, Ablegen, Stapeln" }, type: "video", src: "assets/videos/hil-panda-pick-place-stack.mp4" },
-      { title: { en: "Sawyer: pick and place", de: "Sawyer: Pick and Place" }, type: "video", src: "assets/videos/hil-sawyer-pick-place.mp4" },
-      { title: { en: "FR3: pick and place", de: "FR3: Pick and Place" }, type: "video", src: "assets/videos/hil-fr3-pick-place.mp4" },
-      { title: { en: "UR5e: lift cube", de: "UR5e: Würfel anheben" }, type: "video", src: "assets/videos/hil-ur5e-lift-cube.mp4" },
-      { title: { en: "UR10e: lift cube", de: "UR10e: Würfel anheben" }, type: "video", src: "assets/videos/hil-ur10e-lift-cube.mp4" },
-      { title: { en: "xArm7: lift cube", de: "xArm7: Würfel anheben" }, type: "video", src: "assets/videos/hil-xarm7-lift-cube.mp4" },
-      { title: { en: "LIBERO-10 benchmark task: bowl into drawer", de: "LIBERO-10-Benchmark-Aufgabe: Schüssel in die Schublade" }, type: "video", src: "assets/videos/hil-libero-bowl-in-drawer.mp4" },
+      { title: { en: "Panda: pick and place (scripted expert)", de: "Panda: Pick and Place (skriptierter Experte)" }, type: "video", src: "assets/videos/hil-panda-pick-place.mp4", poster: "assets/images/projects/posters/hil-panda-pick-place.jpg" },
+      { title: { en: "Panda: three-stage pick, place, stack", de: "Panda: dreistufiges Greifen, Ablegen, Stapeln" }, type: "video", src: "assets/videos/hil-panda-pick-place-stack.mp4", poster: "assets/images/projects/posters/hil-panda-pick-place-stack.jpg" },
+      { title: { en: "Sawyer: pick and place", de: "Sawyer: Pick and Place" }, type: "video", src: "assets/videos/hil-sawyer-pick-place.mp4", poster: "assets/images/projects/posters/hil-sawyer-pick-place.jpg" },
+      { title: { en: "FR3: pick and place", de: "FR3: Pick and Place" }, type: "video", src: "assets/videos/hil-fr3-pick-place.mp4", poster: "assets/images/projects/posters/hil-fr3-pick-place.jpg" },
+      { title: { en: "UR5e: lift cube", de: "UR5e: Würfel anheben" }, type: "video", src: "assets/videos/hil-ur5e-lift-cube.mp4", poster: "assets/images/projects/posters/hil-ur5e-lift-cube.jpg" },
+      { title: { en: "UR10e: lift cube", de: "UR10e: Würfel anheben" }, type: "video", src: "assets/videos/hil-ur10e-lift-cube.mp4", poster: "assets/images/projects/posters/hil-ur10e-lift-cube.jpg" },
+      { title: { en: "xArm7: lift cube", de: "xArm7: Würfel anheben" }, type: "video", src: "assets/videos/hil-xarm7-lift-cube.mp4", poster: "assets/images/projects/posters/hil-xarm7-lift-cube.jpg" },
+      { title: { en: "LIBERO-10 benchmark task: bowl into drawer", de: "LIBERO-10-Benchmark-Aufgabe: Schüssel in die Schublade" }, type: "video", src: "assets/videos/hil-libero-bowl-in-drawer.mp4", poster: "assets/images/projects/posters/hil-libero-bowl-in-drawer.jpg" },
       { title: { en: "Six arms, one registry", de: "Sechs Arme, eine Registry" }, type: "image", src: "assets/images/projects/hil-arm-lineup.png" },
       { title: { en: "Task stages, from reset to success", de: "Aufgabenstufen, vom Reset bis zum Erfolg" }, type: "image", src: "assets/images/projects/hil-task-sequence.png" },
       { title: { en: "Sawyer grasp fix, before and after", de: "Sawyer-Greifkorrektur, vorher und nachher" }, type: "image", src: "assets/images/projects/hil-sawyer-fix.png" },
@@ -254,7 +254,7 @@ const PROJECTS = [
       writeup: ""
     },
     media: [
-      { title: { en: "Insertion demo", de: "Einführungs-Demo" }, type: "video", src: "assets/videos/socket-insertion-demo.mp4", poster: "assets/images/projects/socket-detector-workflow.png" },
+      { title: { en: "Insertion demo", de: "Einführungs-Demo" }, type: "video", src: "assets/videos/socket-insertion-demo.mp4", poster: "assets/images/projects/posters/socket-insertion-demo.jpg" },
       { title: { en: "Pipeline overview", de: "Pipeline-Übersicht" }, type: "image", src: "assets/images/projects/socket-detector-workflow.png" },
       { title: { en: "Raw camera view", de: "Rohes Kamerabild" }, type: "image", src: "assets/images/projects/socket-detector-raw.jpg" },
       { title: { en: "Segmentation mask", de: "Segmentierungsmaske" }, type: "image", src: "assets/images/projects/socket-detector-mask.jpg" },
@@ -289,7 +289,7 @@ const PROJECTS = [
       writeup: ""
     },
     media: [
-      { title: { en: "Exploration demo", de: "Explorations-Demo" }, type: "video", src: "assets/videos/ros2-explorer-demo.mp4", poster: "assets/images/projects/ros2-explorer-gazebo.png" }
+      { title: { en: "Exploration demo", de: "Explorations-Demo" }, type: "video", src: "assets/videos/ros2-explorer-demo.mp4", poster: "assets/images/projects/posters/ros2-explorer-demo.jpg" }
     ]
   },
   {

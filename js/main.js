@@ -122,6 +122,15 @@
       </div>`;
   }
 
+  // Only one video should decode at a time: card previews pause while the
+  // modal is open and resume (if still on screen) when it closes.
+  function pauseCardVideos(paused) {
+    document.querySelectorAll(".project-card__video").forEach((v) => {
+      if (paused) v.pause();
+      else if (v.src && v.dataset.visible === "1") v.play().catch(() => {});
+    });
+  }
+
   // Loads + plays each card video only while it's on screen (saves bandwidth
   // and CPU); reduced-motion visitors just keep the still thumbnail.
   let cardVideoObserver = null;
@@ -136,7 +145,8 @@
       (entries) => {
         entries.forEach((entry) => {
           const v = entry.target;
-          if (entry.isIntersecting) {
+          v.dataset.visible = entry.isIntersecting ? "1" : "0";
+          if (entry.isIntersecting && !modal.classList.contains("open")) {
             if (!v.src) v.src = v.dataset.src;
             v.play().catch(() => {});
           } else {
@@ -327,6 +337,7 @@
       .map((l) => `<a class="btn btn--ghost" href="${escapeHtml(l.href)}" target="_blank" rel="noopener">${escapeHtml(l.label)}</a>`)
       .join("");
 
+    pauseCardVideos(true);
     modal.classList.add("open");
     modal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
@@ -338,6 +349,7 @@
     modal.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
     modalMedia.innerHTML = "";
+    pauseCardVideos(false);
     if (lastFocused) lastFocused.focus();
   }
 
