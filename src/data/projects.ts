@@ -111,7 +111,7 @@ export const projects: Project[] = [
     preview: "assets/videos/hil-panda-pick-place-stack.mp4",
     featured: true,
     links: {
-      github: "https://github.com/Kartikdangi1/hil_serl_lite",
+      github: "", // private repository: no "View code" button
       demo: "",
       writeup: "assets/docs/hil-serl-lite-semester1-report.pdf"
     },
@@ -187,7 +187,7 @@ export const projects: Project[] = [
     thumbnail: "assets/images/projects/drone-radar-fusion-overlay.webp",
     featured: true,
     links: {
-      github: "https://github.com/Kartikdangi1/drone-radar-camera-fusion",
+      github: "", // private repository: no "View code" button
       demo: "",
       writeup: ""
     },
@@ -251,52 +251,6 @@ export const projects: Project[] = [
     },
     media: [
       { title: { en: "Exploration demo", de: "Explorations-Demo" }, type: "video", src: "assets/videos/ros2-explorer-demo.mp4", poster: "assets/images/projects/posters/ros2-explorer-demo.jpg" }
-    ]
-  },
-  {
-    id: "phone-drone",
-    title: { en: "Phone-as-Sensor Drone Control", de: "Smartphone-als-Sensor-Drohnensteuerung" },
-    tagline: {
-      en: "An Android phone as a drone's VIO sensor and gesture controller",
-      de: "Ein Android-Smartphone als VIO-Sensor und Gestensteuerung einer Drohne"
-    },
-    description: {
-      en: "A pipeline that turns an ordinary Android phone into a drone's sensor and controller: the phone's IMU and camera stream over WiFi into ROS 2, OpenVINS turns that into visual-inertial odometry fed to PX4 as external vision, and MediaPipe hand-gesture recognition on the same video feed drives arm/takeoff/land and directional flight commands over MAVROS.",
-      de: "Eine Pipeline, die ein gewöhnliches Android-Smartphone in Sensor und Steuerung einer Drohne verwandelt: IMU und Kamera des Smartphones streamen per WLAN in ROS 2, OpenVINS macht daraus eine visuell-inertiale Odometrie, die PX4 als externe Vision zugeführt wird, und eine MediaPipe-Handgestenerkennung auf demselben Videostream steuert Arm/Start/Landung sowie Richtungsbefehle über MAVROS."
-    },
-    tags: ["PX4", "MAVROS", "OpenVINS", "MediaPipe", "ROS2"],
-    thumbnail: "assets/images/projects/phone-drone-pipeline.svg",
-    featured: false,
-    links: {
-      github: "https://github.com/Kartikdangi1/phone-drone",
-      demo: "",
-      writeup: ""
-    },
-    media: [
-      { title: { en: "Sensor & control pipeline", de: "Sensor- und Steuerungspipeline" }, type: "image", src: "assets/images/projects/phone-drone-pipeline.svg" }
-    ]
-  },
-  {
-    id: "hand-tracking-simulation",
-    title: { en: "Camera-Driven Robotic Hand Tracking", de: "Kameragestütztes Roboter-Hand-Tracking" },
-    tagline: {
-      en: "MediaPipe hand tracking driving a simulated DexHand",
-      de: "MediaPipe-Hand-Tracking steuert eine simulierte DexHand"
-    },
-    description: {
-      en: "A ROS 2 node that drives a DexHand robotic hand model from MediaPipe hand tracking on a live camera feed. It derives finger flexion and abduction angles directly from landmark geometry instead of relying on noisy quaternion orientation, and uses tuned One-Euro filtering plus hold-last-pose logic to keep the joint-state stream smooth through brief tracking loss.",
-      de: "Ein ROS-2-Knoten, der ein DexHand-Robotermodell per MediaPipe-Hand-Tracking aus einem Live-Kamerabild ansteuert. Er leitet Beuge- und Spreizwinkel der Finger direkt aus der Landmark-Geometrie ab, statt sich auf verrauschte Quaternion-Orientierung zu verlassen, und nutzt abgestimmte One-Euro-Filterung plus Hold-Last-Pose-Logik, um den Joint-State-Stream auch bei kurzem Tracking-Verlust ruhig zu halten."
-    },
-    tags: ["ROS2", "MediaPipe", "Computer Vision", "Robotics"],
-    thumbnail: "assets/images/projects/hand-tracking-landmarks.svg",
-    featured: false,
-    links: {
-      github: "https://github.com/Kartikdangi1/hand_tracking_simulation",
-      demo: "",
-      writeup: ""
-    },
-    media: [
-      { title: { en: "Hand landmark tracking", de: "Hand-Landmark-Tracking" }, type: "image", src: "assets/images/projects/hand-tracking-landmarks.svg" }
     ]
   }
 ];
