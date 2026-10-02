@@ -96,20 +96,26 @@
   /* ---------------- Projects grid ---------------- */
   // A card whose project has a video plays it right on the card (muted, looped,
   // inline). `preview` can point at a lighter clip than the full modal video.
-  function previewSrc(project) {
-    if (project.preview) return project.preview;
-    const v = (project.media || []).find((m) => m.type === "video");
-    return v ? v.src : "";
+  // A project with several videos plays them all on the card, one after the
+  // other, looping back to the first; a single-video project loops its
+  // (light) preview clip.
+  function previewPlaylist(project) {
+    const videos = (project.media || []).filter((m) => m.type === "video");
+    if (videos.length > 1) return videos.map((v) => v.src);
+    if (project.preview) return [project.preview];
+    return videos.length ? [videos[0].src] : [];
   }
+  const hasVideo = (project) => (project.media || []).some((m) => m.type === "video");
 
   function cardMediaHtml(project) {
     const [from, to] = project.accent || ["#2f8a94", "#124d54"];
     const bg = project.thumbnail
       ? `background-image:url('${escapeHtml(project.thumbnail)}')`
       : `background-image:linear-gradient(135deg, ${from}, ${to})`;
-    const src = previewSrc(project);
+    const playlist = previewPlaylist(project);
+    const src = playlist.length > 0;
     const video = src
-      ? `<video class="project-card__video" data-src="${escapeHtml(src)}" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>`
+      ? `<video class="project-card__video" data-playlist="${escapeHtml(JSON.stringify(playlist))}" ${playlist.length === 1 ? "loop" : ""} muted playsinline preload="none" aria-hidden="true" tabindex="-1"></video>`
       : "";
 
     return `
@@ -147,7 +153,7 @@
           const v = entry.target;
           v.dataset.visible = entry.isIntersecting ? "1" : "0";
           if (entry.isIntersecting && !modal.classList.contains("open")) {
-            if (!v.src) v.src = v.dataset.src;
+            if (!v.src) v.src = v.playlist[0];
             v.play().catch(() => {});
           } else {
             v.pause();
@@ -156,7 +162,17 @@
       },
       { threshold: 0.25 }
     );
-    videos.forEach((v) => cardVideoObserver.observe(v));
+    videos.forEach((v) => {
+      v.playlist = JSON.parse(v.dataset.playlist);
+      v.playlistIndex = 0;
+      // Queue: when a clip ends, start the next one (wrapping around).
+      v.addEventListener("ended", () => {
+        v.playlistIndex = (v.playlistIndex + 1) % v.playlist.length;
+        v.src = v.playlist[v.playlistIndex];
+        v.play().catch(() => {});
+      });
+      cardVideoObserver.observe(v);
+    });
   }
 
   function projectCardHtml(p) {
@@ -184,7 +200,8 @@
 
   function renderProjects() {
     const grid = document.getElementById("projectsGrid");
-    const sorted = [...PROJECTS].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+    // Video projects first, everything else below (array order is kept within each group).
+    const sorted = [...PROJECTS].sort((a, b) => (hasVideo(b) ? 1 : 0) - (hasVideo(a) ? 1 : 0));
 
     grid.innerHTML = sorted
       .map((p, i) => {
@@ -253,11 +270,23 @@
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen loading="lazy"></iframe>`;
     } else if (item.type === "video") {
-      modalMedia.innerHTML = `<video controls autoplay muted loop playsinline
+      const videoCount = project.media.filter((m) => m.type === "video").length;
+      modalMedia.innerHTML = `<video controls autoplay muted ${videoCount > 1 ? "" : "loop"} playsinline
         ${item.poster ? `poster="${escapeHtml(item.poster)}"` : ""}>
         <source src="${escapeHtml(item.src)}">
         Your browser doesn't support embedded video.
       </video>`;
+      if (videoCount > 1) {
+        // Queue the project's videos: when one ends, play the next video slide
+        // (skipping images), wrapping back to the first.
+        modalMedia.querySelector("video").addEventListener("ended", () => {
+          const n = project.media.length;
+          for (let step = 1; step <= n; step++) {
+            const j = (index + step) % n;
+            if (project.media[j].type === "video") return showSlide(j);
+          }
+        });
+      }
       if (item.speed) {
         const videoEl = modalMedia.querySelector("video");
         videoEl.defaultPlaybackRate = item.speed;
