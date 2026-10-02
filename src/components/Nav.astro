@@ -1,0 +1,37 @@
+---
+import { route, ui, type Lang } from "../data/i18n";
+interface Props { lang: Lang; path?: string; }
+const { lang, path = "" } = Astro.props;
+const t = ui[lang];
+const home = route(lang);
+---
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a href={`${home}#home`} class="nav__brand">KD<span class="dot">.</span></a>
+    <nav class="nav__links" id="navLinks" aria-label="Primary">
+      <a href={`${home}#about`}>{t.nav.about}</a>
+      <a href={`${home}#projects`}>{t.nav.projects}</a>
+      <a href={`${home}#skills`}>{t.nav.skills}</a>
+      <a href={`${home}#contact`}>{t.nav.contact}</a>
+    </nav>
+    <div class="nav__actions">
+      <div class="lang-toggle" role="group" aria-label={t.lang.label}>
+        <a class:list={["lang-toggle__btn", { "is-active": lang === "en" }]} href={route("en", path)} hreflang="en" lang="en" aria-current={lang === "en" ? "true" : undefined}>EN</a>
+        <a class:list={["lang-toggle__btn", { "is-active": lang === "de" }]} href={route("de", path)} hreflang="de" lang="de" aria-current={lang === "de" ? "true" : undefined}>DE</a>
+      </div>
+      <button class="theme-toggle" id="themeToggle" aria-label={t.theme.toLight} data-to-light={t.theme.toLight} data-to-dark={t.theme.toDark}>
+        <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2" />
+          <path d="M12 2.5v2.6M12 18.9v2.6M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M2.5 12h2.6M18.9 12h2.6M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8" />
+        </svg>
+        <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5Z" />
+        </svg>
+      </button>
+      <a href={`${home}#contact`} class="btn btn--ghost nav__cta">{t.nav.cta}</a>
+      <button class="nav__toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>

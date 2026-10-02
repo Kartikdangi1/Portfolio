@@ -1,0 +1,39 @@
+---
+import { pick, url, ui, type Lang } from "../data/i18n";
+import type { Project } from "../data/projects";
+interface Props { project: Project; lang: Lang; }
+const { project, lang } = Astro.props;
+const t = ui[lang].project;
+const items = project.media;
+const videoCount = items.filter((m) => m.type === "video").length;
+const label = (i: number) => `${t.slide} ${i + 1} ${t.of} ${items.length}`;
+const thumb = (m: (typeof items)[number]) => (m.type === "image" ? m.src : m.type === "video" ? m.poster ?? project.thumbnail : project.thumbnail);
+---
+{items.length > 0 && (
+  <section class:list={["carousel", { "carousel--single": items.length < 2 }]} aria-roledescription="carousel" aria-label={t.media} data-multi-video={videoCount > 1}>
+    <div class="carousel__stage" tabindex="0">
+      {items.map((m, i) => (
+        <figure class:list={["carousel__slide", { "is-active": i === 0 }]} role="group" aria-roledescription="slide" aria-label={label(i)} data-type={m.type} data-title={pick(m.title, lang)}>
+          {m.type === "image" && <img src={url(m.src)} alt={pick(m.title, lang)} loading={i === 0 ? "eager" : "lazy"} decoding="async" />}
+          {m.type === "video" && (
+            <video data-src={url(m.src)} poster={m.poster ? url(m.poster) : undefined} controls muted playsinline preload="none" loop={videoCount === 1} aria-label={pick(m.title, lang)} />
+          )}
+          {m.type === "youtube" && (
+            <iframe data-src={`https://www.youtube-nocookie.com/embed/${encodeURIComponent(m.id)}?rel=0`} title={pick(m.title, lang)} allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" />
+          )}
+        </figure>
+      ))}
+      <button class="carousel__nav carousel__nav--prev" type="button" aria-label={t.prev}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg></button>
+      <button class="carousel__nav carousel__nav--next" type="button" aria-label={t.next}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></button>
+      <span class="carousel__counter" aria-hidden="true">1 / {items.length}</span>
+    </div>
+    <p class="carousel__caption" aria-live="polite">{pick(items[0].title, lang)}</p>
+    <div class="carousel__thumbs">
+      {items.map((m, i) => (
+        <button type="button" class:list={["carousel__thumb", { "is-active": i === 0, "carousel__thumb--video": m.type !== "image" }]} aria-label={pick(m.title, lang)} data-index={i}>
+          <img src={url(thumb(m))} alt="" loading="lazy" decoding="async" />
+        </button>
+      ))}
+    </div>
+  </section>
+)}

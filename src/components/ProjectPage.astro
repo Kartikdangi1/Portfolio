@@ -1,0 +1,67 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "./Nav.astro";
+import Carousel from "./Carousel.astro";
+import DroneCompanion from "./DroneCompanion.astro";
+import { pick, route, url, ui, type Lang } from "../data/i18n";
+import { site } from "../data/site";
+import { sortedProjects, type Project } from "../data/projects";
+
+interface Props { lang: Lang; project: Project; }
+const { lang, project: p } = Astro.props;
+const t = ui[lang].project;
+const list = sortedProjects();
+const next = list[(list.findIndex((x) => x.id === p.id) + 1) % list.length];
+const links = [
+  p.links.github && { label: t.viewCode, href: p.links.github, external: true },
+  p.links.demo && { label: t.liveDemo, href: p.links.demo, external: true },
+  p.links.writeup && { label: t.readWriteup, href: p.links.writeup.startsWith("http") ? p.links.writeup : url(p.links.writeup), external: true }
+].filter(Boolean) as { label: string; href: string; external: boolean }[];
+const path = `projects/${p.id}/`;
+const title = `${pick(p.title, lang)} | ${site.name}`;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  name: pick(p.title, lang),
+  description: pick(p.tagline, lang),
+  keywords: p.tags.join(", "),
+  inLanguage: lang,
+  author: { "@type": "Person", name: site.name, url: new URL(route("en"), Astro.site).href },
+  url: new URL(route(lang, path), Astro.site).href
+};
+---
+<Base lang={lang} title={title} description={pick(p.tagline, lang)} path={path} jsonLd={jsonLd}>
+  <Nav lang={lang} path={path} />
+  <main id="main" class="project-page">
+    <div class="project-page__inner">
+      <a class="project-page__back" href={`${route(lang)}#projects`}>&larr; {t.back}</a>
+      <h1>{pick(p.title, lang)}</h1>
+      <p class="project-page__tagline">{pick(p.tagline, lang)}</p>
+      <div class="project-page__tags">{p.tags.map((tag) => <span class="tag">{tag}</span>)}</div>
+
+      <Carousel project={p} lang={lang} />
+
+      <div class="project-page__body">
+        <p>{pick(p.description, lang)}</p>
+        {links.length > 0 && (
+          <div class="project-page__links">
+            {links.map((l) => <a class="btn btn--ghost" href={l.href} target="_blank" rel="noopener">{l.label}</a>)}
+          </div>
+        )}
+        {p.pipeline && p.pipeline.length > 0 && (
+          <>
+            <h2>{t.howItWorks}</h2>
+            <ol>{p.pipeline.map((s) => <li>{pick(s, lang)}</li>)}</ol>
+          </>
+        )}
+      </div>
+
+      <nav class="project-page__next" aria-label={t.nextProject}>
+        <a class="btn btn--ghost" href={`${route(lang)}#projects`}>&larr; {t.back}</a>
+        <a class="btn btn--primary" href={route(lang, `projects/${next.id}/`)}>{t.nextProject}: {pick(next.title, lang)} &rarr;</a>
+      </nav>
+    </div>
+  </main>
+  <footer class="footer"><p>&copy; {new Date().getFullYear()} {site.name}. {ui[lang].footer.builtWith}</p></footer>
+  <DroneCompanion />
+</Base>
