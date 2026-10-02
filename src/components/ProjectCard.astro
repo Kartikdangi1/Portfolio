@@ -1,0 +1,31 @@
+---
+import { pick, route, url, type Lang } from "../data/i18n";
+import type { Project } from "../data/projects";
+interface Props { project: Project; lang: Lang; index: number; }
+const { project: p, lang, index } = Astro.props;
+
+// Several videos play back to back on the card; one video loops its light preview clip.
+const videos = p.media.filter((m) => m.type === "video");
+const playlist = videos.length > 1 ? videos.map((v) => url(v.src)) : p.preview ? [url(p.preview)] : videos.length ? [url(videos[0].src)] : [];
+
+// Deterministic "dealt card" jitter (stable across builds, varied per card).
+const jitter = (n: number, spread: number) => (Math.sin(index * 12.9898 + n * 78.233) * 43758.5453 % 1) * spread;
+const style = `--deal-rot:${jitter(1, 6).toFixed(2)}deg;--deal-x:${jitter(2, 36).toFixed(1)}px;--deal-delay:${(index * 0.09).toFixed(2)}s`;
+---
+<div class="project-deal-wrap reveal" style={style}>
+  <a class:list={["project-card", { "project-card--featured": p.featured }]} href={route(lang, `projects/${p.id}/`)} data-project={p.id}>
+    <div class:list={["project-card__media", { "project-card__media--video": playlist.length > 0 }]}>
+      <img class="project-card__img" src={url(p.thumbnail)} alt="" loading={index < 3 ? "eager" : "lazy"} decoding="async" />
+      {playlist.length > 0 && (
+        <video class="project-card__video" data-playlist={JSON.stringify(playlist)} loop={playlist.length === 1} muted playsinline preload="none" aria-hidden="true" tabindex="-1" />
+      )}
+      <span class="project-card__badge">{p.tags[0]}</span>
+      <div class="project-card__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    </div>
+    <div class="project-card__body">
+      <h3 class="project-card__title">{pick(p.title, lang)}</h3>
+      <p class="project-card__tagline">{pick(p.tagline, lang)}</p>
+      <div class="project-card__tags">{p.tags.map((tag) => <span class="tag">{tag}</span>)}</div>
+    </div>
+  </a>
+</div>

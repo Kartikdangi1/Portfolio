@@ -1,83 +1,52 @@
-# Portfolio site
+# Portfolio
 
-A dependency-free (no build step, no npm install) portfolio site. Open
-`index.html` directly in a browser, or serve the folder locally:
+Personal portfolio for Kartik Dangi, built with [Astro](https://astro.build) and TypeScript.
+It builds to plain static HTML and deploys to GitHub Pages: <https://kartikdangi1.github.io/Portfolio/>.
+
+## Develop
 
 ```bash
-python3 -m http.server 8080
-# then open http://localhost:8080
+npm install
+npm run dev       # http://localhost:4321/Portfolio/
+npm run build     # type-checks, then builds to dist/
+npm run preview   # serve the production build
 ```
 
-## Adding a new project
+## Structure
 
-Open `js/projects.js` and copy one of the objects in the `PROJECTS` array.
-Every field is documented in the comment block at the top of that file.
-Save, refresh the page — no build step.
-
-Minimal example:
-
-```js
-{
-  id: "my-new-project",
-  title: "My New Project",
-  tagline: "One line describing what it does",
-  description: "A couple of sentences with more detail for the modal view.",
-  tags: ["ROS2", "Computer Vision"],
-  accent: ACCENT_PRESETS.amber,
-  thumbnail: "",
-  featured: false,
-  links: { github: "https://github.com/you/repo", demo: "", writeup: "" },
-  media: []
-}
+```
+src/
+  data/        site.ts (bio, skills, links), projects.ts (all projects), i18n.ts (UI strings)
+  layouts/     Base.astro (SEO tags, hreflang, theme bootstrap)
+  components/  HomePage, ProjectPage, ProjectCard, Carousel, Nav, ...
+  pages/       /, /de/, /projects/<id>/, /de/projects/<id>/
+  scripts/     small client modules (theme, nav, typewriter, card videos, carousel, drone)
+  styles/      global.css
+public/assets/ images, videos, resume PDFs (served as-is)
 ```
 
-## Adding a video or image to a project
+English is the default language at `/`; German lives under `/de/`. Each project has its own
+page with a media carousel, so it can be linked and shared on its own.
 
-Add an entry to that project's `media` array — it can be a video, a YouTube
-embed, or a plain image (handy for architecture diagrams or result figures
-before you have footage):
+## Add or edit a project
 
-**YouTube** — grab the ID from the URL (`youtube.com/watch?v=THIS_PART`):
+Edit `src/data/projects.ts` and add an object to `projects`. Put media under `public/assets/`
+and reference it as `"assets/..."`. A project with videos is listed above the others
+automatically. If it has several videos they play one after another in a loop, on the card
+and on the project page.
 
-```js
-{ title: "Live demo", type: "youtube", id: "THIS_PART" }
-```
+- Cards autoplay `preview` (a light clip) when there is one video, or the full video list when
+  there are several.
+- Give every video a `poster` image (used for thumbnails and before playback).
+- Encode videos for the web: H.264, at most 720-1280px wide, 24-30 fps, `-movflags +faststart`.
+- Prefer WebP for screenshots (`.svg` for diagrams).
 
-**Local video file** — drop the file into `assets/videos/`, then reference it:
+## Resume
 
-```js
-{ title: "Training run", type: "video", src: "assets/videos/clip.mp4", poster: "assets/images/projects/clip-poster.jpg" }
-```
+`public/assets/resume.pdf` (English) and `resume-de.pdf` (German) are web copies of the resumes
+from the private `Resume` repo. They intentionally leave out the home address, phone number and
+date of birth. Replace the files to update them.
 
-**Image** — drop the file into `assets/images/projects/` (or point at any URL):
+## Deploy
 
-```js
-{ title: "System architecture", type: "image", src: "assets/images/projects/diagram.png" }
-```
-
-A project can mix any number of these — they show up as tabs in the modal
-that opens when the project card is clicked. A project with an empty
-`media: []` array shows a friendly "coming soon" placeholder instead of a
-broken player, so it's safe to add a project before you have footage.
-
-## Adding a project thumbnail image
-
-Drop an image into `assets/images/projects/` and set the project's
-`thumbnail` field to its path, e.g. `"assets/images/projects/my-shot.jpg"`.
-Leave it as `""` to use an automatic gradient card instead (color set by the
-`accent` field).
-
-## Editing your bio, skills, and contact links
-
-All of that lives in `js/config.js` (the `SITE` object) — name, role,
-tagline, about text, stats, skills list, email, and social links.
-
-## Deploying
-
-A GitHub Actions workflow at `.github/workflows/deploy.yml` publishes this
-repo to GitHub Pages automatically on push to `main`. To enable it: repo
-Settings → Pages → set "Source" to "GitHub Actions". No further
-configuration needed.
-
-You can also drag-and-drop this folder onto Netlify/Vercel, or host it on
-any static file server — it's plain HTML/CSS/JS.
+Pushing to `main` runs `.github/workflows/deploy.yml`: install, type-check, build, publish `dist/`.

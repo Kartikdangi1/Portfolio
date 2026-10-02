@@ -1,0 +1,84 @@
+---
+import "@fontsource-variable/inter";
+import "@fontsource-variable/jetbrains-mono";
+import "../styles/global.css";
+import { route, url, ui, type Lang } from "../data/i18n";
+import { site } from "../data/site";
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** Path under the language root, e.g. "" or "projects/sinew/". */
+  path?: string;
+  jsonLd?: Record<string, unknown>;
+}
+
+const { lang, title, description, path = "", jsonLd } = Astro.props;
+const t = ui[lang];
+const canonical = new URL(route(lang, path), Astro.site).href;
+const alternates = {
+  en: new URL(route("en", path), Astro.site).href,
+  de: new URL(route("de", path), Astro.site).href
+};
+const ogImage = new URL(url("assets/images/og-image.png"), Astro.site).href;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={alternates.en} />
+    <link rel="alternate" hreflang="de" href={alternates.de} />
+    <link rel="alternate" hreflang="x-default" href={alternates.en} />
+    <meta name="google-site-verification" content="u5tb6UWVP6_4u6L6Hjq-pfWaeAnNVwN9lbDNV1eVdOA" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={lang === "de" ? "de_DE" : "en_US"} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="2400" />
+    <meta property="og:image:height" content="1260" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd ?? {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      name: site.name,
+      url: alternates.en,
+      image: ogImage,
+      jobTitle: "Robotics Engineer",
+      description,
+      sameAs: [site.social.github, site.social.linkedin],
+      alumniOf: { "@type": "CollegeOrUniversity", name: "Technical University of Applied Sciences Würzburg-Schweinfurt (THWS)" },
+      knowsAbout: ["Robotics", "Reinforcement Learning", "Computer Vision", "SLAM", "Sensor Fusion", "4D Radar Perception", "ROS 2"]
+    })} />
+
+    <link rel="icon" href={url("assets/images/favicon.svg")} type="image/svg+xml" />
+    <noscript><style>.reveal, .project-deal-wrap .project-card, .skill-pill.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
+    <script is:inline>
+      (function () {
+        var stored = null;
+        try { stored = localStorage.getItem("theme"); } catch (e) {}
+        var theme = stored || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t.project.skip}</a>
+    <slot />
+    <script>
+      import "../scripts/chrome";
+    </script>
+  </body>
+</html>

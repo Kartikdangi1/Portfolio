@@ -1,0 +1,107 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "./Nav.astro";
+import ProjectCard from "./ProjectCard.astro";
+import DealerArm from "./DealerArm.astro";
+import DroneCompanion from "./DroneCompanion.astro";
+import { pick, url, ui, type Lang } from "../data/i18n";
+import { site } from "../data/site";
+import { sortedProjects } from "../data/projects";
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = ui[lang];
+const projects = sortedProjects();
+const words = site.roleCycle.map((w) => pick(w, lang));
+const about = site.about.map((p) => pick(p, lang));
+const resume = url(pick(site.resume, lang));
+const description = pick({
+  en: "Portfolio of Kartik Dangi, a robotics engineer working on 4D radar mapping for GPS-denied UAV flight, human-in-the-loop reinforcement learning, and vision-guided robotic manipulation.",
+  de: "Portfolio von Kartik Dangi, Robotik-Ingenieur: 4D-Radar-Kartierung für GPS-freien Drohnenflug, Human-in-the-Loop-Reinforcement-Learning und bildgestützte Roboter-Manipulation."
+}, lang);
+---
+<Base lang={lang} title={`${site.name}, ${lang === "de" ? "Robotik-Ingenieur" : "Robotics Engineer"}`} description={description}>
+  <Nav lang={lang} />
+  <main id="main">
+    <section class="hero" id="home">
+      <div class="hero__glow hero__glow--1"></div>
+      <div class="hero__glow hero__glow--2"></div>
+      <div class="hero__grid"></div>
+      <div class="hero__content reveal">
+        <div class="hero__avatar"><img src={url("assets/images/profile.jpg")} alt={site.name} width="132" height="132" fetchpriority="high" /></div>
+        <p class="eyebrow">{t.hero.eyebrow}</p>
+        <h1 class="hero__name">{site.name}</h1>
+        <p class="hero__role" aria-label={`${pick(site.roleCyclePrefix, lang)} ${words[0]}`}>
+          <span id="heroRolePrefix">{pick(site.roleCyclePrefix, lang)}</span>
+          <span id="heroRoleCycle" class="hero__role-cycle" data-words={JSON.stringify(words)} aria-hidden="true">{words[0]}</span><span class="hero__caret" aria-hidden="true"></span>
+        </p>
+        <p class="hero__tagline">{pick(site.tagline, lang)}</p>
+        <div class="hero__actions">
+          <a href="#projects" class="btn btn--primary">{t.hero.viewProjects}</a>
+          <a href="#contact" class="btn btn--ghost">{t.hero.getInTouch}</a>
+          <a href={resume} class="btn btn--ghost" target="_blank" rel="noopener">{t.hero.resume}</a>
+        </div>
+      </div>
+      <a href="#about" class="scroll-cue" aria-label="Scroll to content"><span></span></a>
+    </section>
+
+    <section class="section reveal" id="about">
+      <div class="section__inner">
+        <p class="section__eyebrow">{t.about.eyebrow}</p>
+        <h2 class="section__title">{t.about.title}</h2>
+        <div class="about__grid">
+          <div class="about__text">{about.map((p) => <p>{p}</p>)}</div>
+          <div class="about__stats">
+            {site.stats.map((s) => (
+              <div class="about__stat"><div class="value">{s.value}</div><div class="label">{pick(s.label, lang)}</div></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="projects">
+      <div class="section__inner">
+        <DealerArm />
+        <p class="section__eyebrow">{t.projects.eyebrow}</p>
+        <h2 class="section__title">{t.projects.title}</h2>
+        <p class="section__subtitle">{t.projects.subtitle}</p>
+        <div class="projects__grid" id="projectsGrid">
+          {projects.map((p, i) => <ProjectCard project={p} lang={lang} index={i} />)}
+        </div>
+      </div>
+    </section>
+
+    <section class="section reveal" id="skills">
+      <div class="section__inner">
+        <p class="section__eyebrow">{t.skills.eyebrow}</p>
+        <h2 class="section__title">{t.skills.title}</h2>
+        <div class="skills__cloud">
+          {site.skills.map((s, i) => (
+            <span class="skill-pill reveal" style={`--deal-rot:${(Math.sin(i * 7.7) * 8).toFixed(2)}deg;--deal-delay:${(i * 0.045).toFixed(2)}s`}>{s}</span>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--contact reveal" id="contact">
+      <div class="section__inner">
+        <p class="section__eyebrow">{t.contact.eyebrow}</p>
+        <h2 class="section__title">{t.contact.title}</h2>
+        <p class="section__subtitle">{t.contact.subtitle}</p>
+        <div class="contact__actions">
+          <a href={`mailto:${site.email}`} class="btn btn--primary">{t.contact.emailBtn}</a>
+          <a href={site.social.github} class="btn btn--ghost" target="_blank" rel="noopener me">{t.contact.github}</a>
+          <a href={site.social.linkedin} class="btn btn--ghost" target="_blank" rel="noopener me">{t.contact.linkedin}</a>
+          <a href={resume} class="btn btn--ghost" target="_blank" rel="noopener">{t.hero.resume}</a>
+        </div>
+        <p class="contact__email-text">{site.email}</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; {new Date().getFullYear()} {site.name}. {t.footer.builtWith}</p>
+  </footer>
+  <DroneCompanion />
+</Base>
